@@ -15,8 +15,10 @@ Instructions:
 
 #### Final documentation (in PDF) 
 The final documentation includes:
+
     1. Technical Specification
-    2. User Manual
+    1. User Manual
+
 
 The first page of each document should contain at least:
 
