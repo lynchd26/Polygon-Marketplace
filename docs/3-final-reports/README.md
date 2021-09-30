@@ -1,5 +1,6 @@
 The required documentation for your final submission should be placed in this directory.
-This includes the following:
+
+This includes your Video Walkthrough and your Final documentation (Technical Specification and User Manual). Details below.
 
 #### Video Walkthrough
 
