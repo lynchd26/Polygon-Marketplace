@@ -17,7 +17,7 @@ Instructions:
 The final documentation includes:
 
     1. Technical Specification
-    1. User Manual
+    2. User Manual
 
 
 The first page of each document should contain at least:
