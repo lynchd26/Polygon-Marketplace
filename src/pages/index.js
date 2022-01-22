@@ -1,87 +1,92 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import { ethers } from "ethers"
+import { useEffect, useState } from "react"
+import axios from 'axios'
+import Web3Modal from 'web3modal'
+
+import {
+  itemaddress, itemmarketaddress
+} from '../config'
+
+import Item from '../artifacts/contracts/Item.sol/Item.json'
+import Market from '../artifacts/contracts/PolygonMarketplace.sol/PolygonMarketplace.json'
 
 export default function Home() {
+  const [items, setItems] = useState([])
+  const [loadingState, setLoadingState] = useState('not-loaded')
+
+  useEffect(() => {
+    loadItems()
+  }, [])
+
+  async function loadItems() {
+    const provider = new ethers.providers.JsonRpcProvider()
+    const tokenContract = new ethers.Contract(itemaddress, Item.abi, provider)
+    const marketContract = new ethers.Contract(itemmarketaddress, Market.abi, provider)
+    const data = await marketContract.fetchMarketItems()
+
+    const items = await Promise.all(data.map(async i => {
+      const tokenUri = await tokenContract.tokenURI(i.tokenId)
+      const meta = await axios.get(tokenUri)
+      let price = ethers.utils.formatUnits(i.price.toString(), 'ether')
+      let item = {
+        price,
+        tokenId: i.tokenId.toNumber(),
+        seller: i.seller,
+        owner: i.owner,
+        image: meta.data.image,
+        name: meta.data.name,
+        descrption: meta.data.descrption,
+      }
+      return item 
+    }))
+    setItems(items)
+    setLoadingState('loaded')
+  }
+
+  async function buyItem(item) {
+    const web3modal = new Web3Modal()
+    const connection = await web3modal.connect()
+    const provider = new ethers.providers.Web3Provider(connection)
+
+    const signer = provider.getSigner()
+    const contract = new ethers.Contract(itemmarketaddress, Market.abi, signer)
+
+    const price = ethers.utils.parseUnits(item.price.toString(), 'ether')
+
+    const transaction = await contract.createMarketSale(itemaddress, item.tokenId, {
+      value: price
+    })
+    await transaction.wait()
+    loadItems()
+  }
+
+  if (loadingState == 'loaded' && items.length <= 0) return (
+    <h1 className="px-20 py-10 text-3xl">There are currently no items listed on the markteplace</h1>
+  )
+
   return (
-    // <div className={styles.container}>
-
-    // </div>
-    <div className="flex flex-col items-center justify-center min-h-screen py-2">
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
-        <h1 className="text-6xl font-bold">
-          Welcome to{' '}
-          <a className="text-blue-600" href="https://nextjs.org">
-            Next.js!
-          </a>
-        </h1>
-
-        <p className="mt-3 text-2xl">
-          Get started by editing{' '}
-          <code className="p-3 font-mono text-lg bg-gray-100 rounded-md">
-            pages/index.tsx
-          </code>
-        </p>
-
-        <div className="flex flex-wrap items-center justify-around max-w-4xl mt-6 sm:w-full">
-          <a
-            href="https://nextjs.org/docs"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Documentation &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Find in-depth information about Next.js features and API.
-            </p>
-          </a>
-
-          <a
-            href="https://nextjs.org/learn"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Learn &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Learn about Next.js in an interactive course with quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Examples &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Discover and deploy boilerplate example Next.js projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Deploy &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+    <div className='flex justify-centre'>
+      <div className="px-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
+          {
+            items.map((item, i) => (
+              <div key={i} className="bg-indigo-200 text-center border shadow rounded-2xl overflow-hidden">
+                <img src={item.image} />
+                <div className="p-4">
+                  <p style={{height: '64px'}} className="text-2xl text-blue-500 font-semibold">{item.name}</p>
+                  <div style={{height: '70px', overflow: 'hidden'}}>
+                    <p className="text-black-400">{item.descrption}</p>
+                  </div>
+                </div>
+                <div className="mx-auto mx-3 mb-3 text-center shadow rounded-2xl p-4 bg-indigo-300">
+                  <p className="text-2xl mb-4 font-bold text-blue-500">{item.price} MATIC</p>
+                  <button className="w-2/3 bg-indigo-200 font-bold py-2 px-12 rounded-2xl text-blue-500 hover:rounded-3xl hover:shadow transition-all duration-600" onClick={() => buyItem(item)}>Buy</button>
+                </div> 
+              </div>
+            ))
+          }
         </div>
-      </main>
-
-      <footer className="flex items-center justify-center w-full h-24 border-t">
-        <a
-          className="flex items-center justify-center"
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className="h-4 ml-2" />
-        </a>
-      </footer>
+      </div>
     </div>
   )
 }

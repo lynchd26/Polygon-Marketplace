@@ -1,32 +1,31 @@
-/* pages/_app.js */S
-
 import '../styles/globals.css'
 import Link from 'next/link'
 
 function MyApp({ Component, pageProps }) {
   return (
     <div>
-      <nav className="border-b p-6">
-        <p className="text-4xl font-bold">Metaverse Marketplace</p>
-        <div className="flex mt-4">
+      <nav className="flex items-center flex-wrap border-blue-500 p-6 bg-indigo-200">
+        <div>
           <Link href="/">
-            <a className="mr-4 text-pink-500">
+            <a className="nline-flex text-4xl font-bold text-blue-500">
+              Polygon Marketplace
+            </a>
+          </Link>
+        </div>
+        <div className="lg:ml-auto lg:items-centre">
+          <Link href="/">
+            <a className="ml-12 mr-6 text-xl text-blue-500 p-2 rounded-2xl hover:bg-indigo-100">
               Home
             </a>
           </Link>
-          <Link href="/create-item">
-            <a className="mr-6 text-pink-500">
-              Sell Digital Asset
+          <Link href="/sell">
+            <a className="mr-6 text-xl text-blue-500 p-2 rounded-2xl hover:bg-indigo-100">
+              Sell
             </a>
           </Link>
-          <Link href="/my-assets">
-            <a className="mr-6 text-pink-500">
-              My Digital Assets
-            </a>
-          </Link>
-          <Link href="/creator-dashboard">
-            <a className="mr-6 text-pink-500">
-              Creator Dashboard
+          <Link href="/profile">
+            <a className="mr-6 text-xl text-blue-500 p-2 rounded-2xl hover:bg-indigo-100">
+              Profile
             </a>
           </Link>
         </div>
