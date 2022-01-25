@@ -91,7 +91,8 @@ contract PolygonMarketplace is ReentrancyGuard {
         require(msg.value == price, "Please submit the price shown to purchase this item");
 
         idToMarketItem[itemId].seller.transfer(msg.value);
-        IERC721(itemContract).transferFrom(address(this), msg.sender, tokenId);        idToMarketItem[itemId].owner = payable(msg.sender);
+        IERC721(itemContract).transferFrom(address(this), msg.sender, tokenId);
+        idToMarketItem[itemId].owner = payable(msg.sender);
         idToMarketItem[itemId].sold = true;
         _itemsSold.increment();
         payable(owner).transfer(listPrice);

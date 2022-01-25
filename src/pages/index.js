@@ -35,7 +35,8 @@ export default function Home() {
         owner: i.owner,
         image: meta.data.image,
         name: meta.data.name,
-        descrption: meta.data.descrption,
+        category: meta.data.category,
+        desc: meta.data.desc,
       }
       return item 
     }))
@@ -71,14 +72,13 @@ export default function Home() {
           {
             items.map((item, i) => (
               <div key={i} className="bg-indigo-200 text-center border shadow rounded-2xl overflow-hidden">
-                <img src={item.image} />
+                <img src={item.image} class="contain" style={{height: '350px'}} />
                 <div className="p-4">
+                  <p style={{height: '64px'}} className="text-2xl text-blue-500 font-semibold">{item.category}</p>
                   <p style={{height: '64px'}} className="text-2xl text-blue-500 font-semibold">{item.name}</p>
-                  <div style={{height: '70px', overflow: 'hidden'}}>
-                    <p className="text-black-400">{item.descrption}</p>
-                  </div>
+                  <p style={{height: '64px'}} className="text-2xl text-blue-500 font-semibold">{item.desc}</p>
                 </div>
-                <div className="mx-auto mx-3 mb-3 text-center shadow rounded-2xl p-4 bg-indigo-300">
+                <div className="mx-3 mb-3 text-center shadow rounded-2xl p-4 bg-indigo-300">
                   <p className="text-2xl mb-4 font-bold text-blue-500">{item.price} MATIC</p>
                   <button className="w-2/3 bg-indigo-200 font-bold py-2 px-12 rounded-2xl text-blue-500 hover:rounded-3xl hover:shadow transition-all duration-600" onClick={() => buyItem(item)}>Buy</button>
                 </div> 

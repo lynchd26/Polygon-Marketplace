@@ -15,17 +15,18 @@ import Market from '../artifacts/contracts/PolygonMarketplace.sol/PolygonMarketp
 
 export default function CreateItem () {
     const [fileUrl, setFileUrl] = useState(null)
-    const [formInput, updateFormInput] = useState({ price: '', name: '', description: '' })
+    const [formInput, updateFormInput] = useState({ price: '', name: '', category: 'Other', desc: '' })
     const router = useRouter()
 
+    // uploads file to IPFS and creates URL
     async function onChange(e) {
         const file = e.target.files[0]
         try {
             const added = await client.add(
                 file,
-                {
-                    progress: (prog) => console.log(`received: ${prog}`)
-                }
+                // {
+                //     progress: (prog) => console.log(`received: ${prog}`)
+                // }
             )
             const url = `https:ipfs.infura.io/ipfs/${added.path}`
             setFileUrl(url)
@@ -36,10 +37,10 @@ export default function CreateItem () {
 
     // creates the items and saves to ipfs
     async function createMarket(e) {
-        const { name, description, price } = formInput
-        if (!name || !description || !price || !fileUrl) return // listing must contain all of these, otherwise return
+        const { name, desc, category, price } = formInput
+        if (!name || !desc || !price || !fileUrl) return // listing must contain all of these, otherwise return
         const data = JSON.stringify({
-            name, description, image: fileUrl
+            name, desc, category, image: fileUrl
         })
 
         // save listing to IPFS
@@ -87,11 +88,22 @@ export default function CreateItem () {
                     className="mt-8 shadow-inner border rounded-2xl p-4 focus:border-blue-500"
                     onChange={e => updateFormInput({ ...formInput, name: e.target.value })}
                 />
-                <textarea
+                <input
                     placeholder="Description"
                     className="mt-2 shadow-inner border rounded-2xl p-4"
-                    onChange={e => updateFormInput({ ...formInput, description: e.target.value })}
+                    onChange={e => updateFormInput({ ...formInput, desc: e.target.value })}
                 />
+                <input
+                    placeholder="Category"
+                    className="mt-2 shadow-inner border rounded-2xl p-4"
+                    onChange={e => updateFormInput({ ... formInput, category: e.target.value })}
+                />
+                {/* <select type="select" className="mt-2 shadow-inner border rounded p-4">
+                    <option value="cars">cars</option>
+                    <option value="clothes">clothes</option>
+                    <option value="fones">fones</option>
+                    <option value="other">other</option>
+                </select> */}
                 <input
                     placeholder="Price (Matic)"
                     className="mt-2 shadow-inner border rounded-2xl p-4"
@@ -105,12 +117,12 @@ export default function CreateItem () {
                 />
                 {
                     fileUrl && (
-                        <img className="rounded-2xl mt-4" width="350" src={fileUrl} />
+                        <img className="mx-auto rounded-2xl mt-4" width="128" src={fileUrl} />
                     )
                 }
                 <button
-                    onClick={createMarket}
                     className="font-bold mt-4 bg-indigo-200 text-blue-500 rounded-2xl p-4 shadow-xl hover:bg-indigo-300"
+                    onClick={createMarket}
                     >
                     Create listing
                 </button>

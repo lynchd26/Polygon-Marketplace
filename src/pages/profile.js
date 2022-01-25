@@ -76,7 +76,7 @@ export default function myItems() {
     return (
       <div className="flex justify-center">
         <div className="p-4">
-          <p className="mt-4 text-3xl text-bold text-blue-500">My Items</p>
+          <p className="mt-4 text-3xl text-bold text-blue-500">My Purchases</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
             {
               items.map((item, i) => (
