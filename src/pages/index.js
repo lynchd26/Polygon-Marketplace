@@ -15,7 +15,7 @@ export default function Home() {
   const [loadingState, setLoadingState] = useState('not-loaded')
 
   useEffect(() => {
-    loadItems()
+    loadItems()   // invokes the loadItems function when the page loads
   }, [])
 
   async function loadItems() {
@@ -24,9 +24,9 @@ export default function Home() {
     const marketContract = new ethers.Contract(itemmarketaddress, Market.abi, provider)
     const data = await marketContract.fetchMarketItems()
 
-    const items = await Promise.all(data.map(async i => {
+    const items = await Promise.all(data.map(async i => {   // map over all unsold items pulled by fetchMarketItems
       const tokenUri = await tokenContract.tokenURI(i.tokenId)
-      const meta = await axios.get(tokenUri)
+      const meta = await axios.get(tokenUri)                // metadata pulled from tokenUri 
       let price = ethers.utils.formatUnits(i.price.toString(), 'ether')
       let item = {
         price,
@@ -45,11 +45,11 @@ export default function Home() {
   }
 
   async function buyItem(item) {
-    const web3modal = new Web3Modal()
-    const connection = await web3modal.connect()
-    const provider = new ethers.providers.Web3Provider(connection)
+    const web3modal = new Web3Modal()                               // checks for wallet
+    const connection = await web3modal.connect()                    // connect to wallet
+    const provider = new ethers.providers.Web3Provider(connection)  // that wallet address becomes the provider
 
-    const signer = provider.getSigner()
+    const signer = provider.getSigner()                             // need contract so sign/approve transaction
     const contract = new ethers.Contract(itemmarketaddress, Market.abi, signer)
 
     const price = ethers.utils.parseUnits(item.price.toString(), 'ether')
@@ -67,26 +67,24 @@ export default function Home() {
 
   return (
     <div className='flex justify-centre'>
-      <div className="px-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
           {
             items.map((item, i) => (
-              <div key={i} className="bg-indigo-200 text-center border shadow rounded-2xl overflow-hidden">
-                <img src={item.image} class="contain" style={{height: '350px'}} />
+              <div key={i} className="mx-6 bg-white text-center border border-violet shadow shadow-violet-400 rounded-2xl overflow-hidden">
+                <img src={item.image} className="m-2"/>
                 <div className="p-4">
-                  <p style={{height: '64px'}} className="text-2xl text-blue-500 font-semibold">{item.category}</p>
-                  <p style={{height: '64px'}} className="text-2xl text-blue-500 font-semibold">{item.name}</p>
-                  <p style={{height: '64px'}} className="text-2xl text-blue-500 font-semibold">{item.desc}</p>
+                  <p className="my-2 text-2xl text-violet-400 font-semibold">{item.category}</p>
+                  <p className="my-2 text-2xl text-violet-400 font-semibold">{item.name}</p>
+                  <p className="my-2 text-2xl text-violet-400 font-semibold">{item.desc}</p>
                 </div>
-                <div className="mx-3 mb-3 text-center shadow rounded-2xl p-4 bg-indigo-300">
-                  <p className="text-2xl mb-4 font-bold text-blue-500">{item.price} MATIC</p>
-                  <button className="w-2/3 bg-indigo-200 font-bold py-2 px-12 rounded-2xl text-blue-500 hover:rounded-3xl hover:shadow transition-all duration-600" onClick={() => buyItem(item)}>Buy</button>
+                <div className="mx-3 mb-3 text-center shadow rounded-2xl p-4 bg-violet-300">
+                  <p className="text-2xl mb-4 font-bold text-slate-100">{item.price} MATIC</p>
+                  <button className="w-2/3 bg-slate-400 font-bold py-2 px-12 rounded-2xl text-white hover:rounded-3xl hover:shadow transition-all duration-600" onClick={() => buyItem(item)}>Buy</button>
                 </div> 
               </div>
             ))
           }
         </div>
-      </div>
     </div>
   )
 }

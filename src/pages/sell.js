@@ -4,8 +4,6 @@ import Web3Modal from 'web3modal'
 import { create as ipfsHttpClient } from 'ipfs-http-client'
 import { useRouter } from "next/router"
 
-const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0')
-
 import {
     itemaddress, itemmarketaddress
 } from '../config'
@@ -13,21 +11,19 @@ import {
 import Item from '../artifacts/contracts/Item.sol/Item.json'
 import Market from '../artifacts/contracts/PolygonMarketplace.sol/PolygonMarketplace.json'
 
+const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0')
+
+
 export default function CreateItem () {
     const [fileUrl, setFileUrl] = useState(null)
     const [formInput, updateFormInput] = useState({ price: '', name: '', category: 'Other', desc: '' })
     const router = useRouter()
 
     // uploads file to IPFS and creates URL
-    async function onChange(e) {
+    async function onChange(e) {    // onChange is invoked by an event 'e'
         const file = e.target.files[0]
         try {
-            const added = await client.add(
-                file,
-                // {
-                //     progress: (prog) => console.log(`received: ${prog}`)
-                // }
-            )
+            const added = await client.add(file)
             const url = `https:ipfs.infura.io/ipfs/${added.path}`
             setFileUrl(url)
         } catch (e) {
@@ -37,6 +33,7 @@ export default function CreateItem () {
 
     // creates the items and saves to ipfs
     async function createMarket(e) {
+        // create the listing
         const { name, desc, category, price } = formInput
         if (!name || !desc || !price || !fileUrl) return // listing must contain all of these, otherwise return
         const data = JSON.stringify({
@@ -52,6 +49,8 @@ export default function CreateItem () {
             console.log('Error uploading file: ', error)
         }
     }
+
+    // creating the token and listing it for sale
     async function createSale(url) {
         const web3Modal = new Web3Modal()
         const connection = await web3Modal.connect()
@@ -59,8 +58,8 @@ export default function CreateItem () {
         const signer = provider.getSigner()
 
         let contract = new ethers.Contract(itemaddress, Item.abi, signer)
-        let transaction = await contract.createToken(url)
-        let tx = await transaction.wait()
+        let transaction = await contract.createToken(url)                   // creates token
+        let tx = await transaction.wait()                                   // wait for token to be created
 
         // parse return value from tx
         let event = tx.events[0]
@@ -69,6 +68,7 @@ export default function CreateItem () {
 
         const price = ethers.utils.parseUnits(formInput.price, 'ether')
 
+        // now put the listing on the marketplace
         contract = new ethers.Contract(itemmarketaddress, Market.abi, signer)
         let listingPrice = await contract.getListingPrice()
         listingPrice = listingPrice.toString()

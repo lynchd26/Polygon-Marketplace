@@ -4,27 +4,27 @@ import Link from 'next/link'
 function MyApp({ Component, pageProps }) {
   return (
     <div>
-      <nav className="flex items-center flex-wrap border-blue-500 p-6 bg-indigo-200">
-        <div>
+      <nav className="flex bg-white items-center flex-wrap my-4 p-2 border-b-4 border-violet-600">
+        <div className='mb-4'>
           <Link href="/">
-            <a className="nline-flex text-4xl font-bold text-blue-500">
+            <a className="inline-flex ml-4 text-3xl font-bold text-violet-400">
               Polygon Marketplace
             </a>
           </Link>
         </div>
-        <div className="lg:ml-auto lg:items-centre">
+        <div className="inline-flex mb-4 lg:ml-auto lg:items-centre">
           <Link href="/">
-            <a className="ml-12 mr-6 text-xl text-blue-500 p-2 rounded-2xl hover:bg-indigo-100">
+            <a className="flex ml-12 mr-6 text-xl text-slate-400 p-2 rounded-2xl hover:bg-violet-200">
               Home
             </a>
           </Link>
           <Link href="/sell">
-            <a className="mr-6 text-xl text-blue-500 p-2 rounded-2xl hover:bg-indigo-100">
+            <a className="mr-6 text-xl text-slate-400 p-2 rounded-2xl hover:bg-violet-200">
               Sell
             </a>
           </Link>
           <Link href="/profile">
-            <a className="mr-6 text-xl text-blue-500 p-2 rounded-2xl hover:bg-indigo-100">
+            <a className="mr-6 text-xl text-slate-400 p-2 rounded-2xl hover:bg-violet-200">
               Profile
             </a>
           </Link>

@@ -1,5 +1,4 @@
 // SPDX-Licence-Identifier: MIT
-
 pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
@@ -15,7 +14,7 @@ contract Item is ERC721URIStorage {
     Counters.Counter private _tokenIds;
     address contractAddress;
 
-    constructor(address marketplaceAddress) ERC721("Metaverse Tokens", "METT") {
+    constructor(address marketplaceAddress) ERC721("Polygon Marketplace", "PMART") {
         contractAddress = marketplaceAddress;
     }
 
