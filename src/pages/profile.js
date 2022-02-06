@@ -19,6 +19,7 @@ const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0')
 export default function myItems() {
     const [items, setItems] = useState([])
     const [sold, setSold] = useState([])
+    const [review, setReview] = useState([])
     const [loadingState, setLoadingState] = useState('not-loaded')
   
     useEffect(() => {
@@ -45,6 +46,9 @@ export default function myItems() {
           seller: i.seller,
           owner: i.owner,
           sold: i.sold,
+          review: i.review,
+          rating: i.rating,
+          details: i.details,
           image: meta.data.image,
           name: meta.data.name,
           descrption: meta.data.descrption,
@@ -65,31 +69,26 @@ export default function myItems() {
           seller: i.seller,
           owner: i.owner,
           sold: i.sold,
+          review: i.review,
+          rating: i.rating,
+          details: i.details,
           image: meta.data.image,
         }
         return item
       }))
 
-      const soldItems = solditems.filter(i => i.sold)
+      const soldItems = solditems.filter(i => i.sold && !i.review)
       setSold(soldItems)
+
+      const isReview = solditems.filter(i => i.review)
+      setReview(isReview)
+
       setLoadingState('loaded')
     }
 
-// export default function createReview(){
     const [fileUrl, setFileUrl] = useState(null)
     const [formInput, updateFormInput] = useState({rating: '', details: ''})
     const router = useRouter()
-
-    // async function onChange(e) {
-    //   const file = e.target.files[0]
-    //   try {
-    //     const added = await client.add(file)
-    //     const url = `https:ipfs.infura.io/ipfs/${added.path}`
-    //     setFileUrl(url)
-    //   } catch (e) {
-    //     console.log(e)
-    //   }
-    // }
 
     async function onChange(e) {    // onChange is invoked by an event 'e'
       const file = e.target.files[0]
@@ -102,16 +101,16 @@ export default function myItems() {
       }
     }
 
-    async function createMarketReview(e) {
+    async function createMarketReview(e, seller) {
       const { rating, details } = formInput
       if (!rating || !details || !fileUrl) return
       const data = JSON.stringify({
-        rating, details, image: fileUrl
+        rating, details, image: fileUrl, seller
       }) 
 
       try {
         const added = await client.add(data)
-        const url = `https:ipfs.infura.io/ipfs/${added.path}` // ipfs path which contains all the data
+        const url = `https:ipfs.infura.io/ipfs/${added.path}`
         submitReview(url)
       } catch (error) {
         console.log('Error uploading file: ', error)
@@ -138,13 +137,29 @@ export default function myItems() {
       let listingPrice = await contract.getListingPrice()
       listingPrice = listingPrice.toString()
       
-      transaction = await contract.createMarketItem(
+      transaction = await contract.createReview(
         itemaddress, tokenId, price, { value: listingPrice }
       )
       await transaction.wait()
+      // completeReview()
       router.push('/profile')
     }
 
+    async function completeReview(review) {
+      const web3modal = new Web3Modal()                               // checks for wallet
+      const connection = await web3modal.connect()                    // connect to wallet
+      const provider = new ethers.providers.Web3Provider(connection)  // that wallet address becomes the provider
+  
+      const signer = provider.getSigner()                             // need contract so sign/approve transaction
+      const contract = new ethers.Contract(itemmarketaddress, Market.abi, signer)
+  
+      const price = ethers.utils.parseUnits('0', 'ether')
+  
+      const transaction = await contract.trasactReview(itemaddress, review.tokenId, {
+        value: price
+      })
+      await transaction.wait()
+    }
 
     // if (loadingState == 'loaded' && items.length <= 0) return (
     //   <h1 className="px-20 py-10 text-3xl">You do not have any listings</h1>
@@ -160,6 +175,7 @@ export default function myItems() {
                 <div key={i} className="border shadow rounded-xl overflow-hidden">
                   <img src={item.image} className="rounded" />
                   <div className="mx-3 mb-3 text-center shadow rounded-2xl p-4 bg-indigo-300">
+                    <p className="mx-auto text-blue-500">Seller:<br></br>{item.seller}</p>
                     <p className="text-xl my-auto font-bold text-blue-500">Purchase price:<br></br>{item.price} MATIC</p>
                   </div>
                   <div className="mx-3 mb-3 text-center shadow rounded-2xl p-4 bg-indigo-300">
@@ -190,8 +206,14 @@ export default function myItems() {
                           className="font-bold mt-4 bg-indigo-200 text-blue-500 rounded-xl hover:rounded-2xl duration-500 p-4 shadow-xl hover:bg-indigo-100"
                           onClick={ createMarketReview }
                       >
-                        Post Review
+                        Submit Review
                       </button>
+                      {/* <button 
+                          className="w-2/3 bg-slate-400 font-bold py-2 px-12 rounded-2xl text-white hover:rounded-3xl hover:shadow transition-all duration-600"
+                          onClick={() => completeReview(item)}>
+                          Complete Review
+                      </button> */}
+
                     </div>
                   </div>
                 </div>
@@ -234,6 +256,19 @@ export default function myItems() {
         </div>
         <div className="p-4">
           <p className="mt-4 text-3xl text-bold text-violet-500">My Reviews</p>
+          <div>
+          {
+              review.map((item, i) => (
+                <div key={i} className="border shadow rounded-xl overflow-hidden">
+                  <img src={item.image} className="rounded" />
+                  <div className="mx-3 mb-3 text-center shadow rounded-2xl p-4 bg-indigo-300">
+                    <p className="text-xl my-auto font-bold text-blue-500">Rating:<br></br>{item.rating}</p>
+                    <p className="text-xl my-auto font-bold text-blue-500">Additional Details:<br></br>{item.details}</p>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
         </div>
       </div>
     )

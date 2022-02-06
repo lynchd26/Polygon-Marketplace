@@ -33,6 +33,7 @@ export default function Home() {
         tokenId: i.tokenId.toNumber(),
         seller: i.seller,
         owner: i.owner,
+        review: i.review,
         image: meta.data.image,
         name: meta.data.name,
         category: meta.data.category,
@@ -40,7 +41,11 @@ export default function Home() {
       }
       return item 
     }))
-    setItems(items)
+    //setItems(items)
+    //setLoadingState('loaded')
+
+    const saleItems = items.filter(i => !i.review)
+    setItems(saleItems)
     setLoadingState('loaded')
   }
 
@@ -60,6 +65,22 @@ export default function Home() {
     await transaction.wait()
     loadItems()
   }
+
+  // async function buyItem(item) {
+  //   const web3modal = new Web3Modal()                               // checks for wallet
+  //   const connection = await web3modal.connect()                    // connect to wallet
+  //   const provider = new ethers.providers.Web3Provider(connection)  // that wallet address becomes the provider
+
+  //   const signer = provider.getSigner()                             // need contract so sign/approve transaction
+  //   const contract = new ethers.Contract(itemmarketaddress, Market.abi, signer)
+
+  //   const price = ethers.utils.parseUnits('0', 'ether')
+
+  //   const transaction = await contract.transactMarketReview(itemaddress, item.tokenId, {
+  //     value: price
+  //   })
+  //   await transaction.wait()
+  // }
 
   if (loadingState == 'loaded' && items.length <= 0) return (
     <h1 className="px-20 py-10 text-3xl">There are currently no items listed on the markteplace</h1>
