@@ -30,6 +30,7 @@ contract PolygonMarketplace is ReentrancyGuard {
         uint256 price;
         bool sold;
         bool review;
+
     }
 
     mapping(uint256 => MarketItem) private idToMarketItem;
@@ -102,7 +103,7 @@ contract PolygonMarketplace is ReentrancyGuard {
         uint256 price
     ) public payable nonReentrant {
         // require(price > 0, "Price must be at least XXX");
-        require(msg.value == listPrice, "Price must be equal to listing price");
+        // require(msg.value == listPrice, "Price must be equal to listing price");
         
         _itemIds.increment();
         uint256 itemId = _itemIds.current();
@@ -149,19 +150,19 @@ contract PolygonMarketplace is ReentrancyGuard {
     }
 
 
-    function transactMarketReview(
-        address itemContract,
-        uint itemId
-    ) public payable nonReentrant {
-        uint price = idToMarketItem[itemId].price;
-        uint tokenId = idToMarketItem[itemId].tokenId;
-        require(msg.value == price);
+    // function transactMarketReview(
+    //     address itemContract,
+    //     uint itemId
+    // ) public payable nonReentrant {
+    //     uint price = idToMarketItem[itemId].price;
+    //     uint tokenId = idToMarketItem[itemId].tokenId;
+    //     require(msg.value == price);
 
-        IERC721(itemContract).transferFrom(address(this), msg.sender, tokenId);
-        idToMarketItem[itemId].owner = payable(msg.sender);
-        idToMarketItem[itemId].review = true;
-        idToMarketItem[itemId].sold = true;
-    }
+    //     IERC721(itemContract).transferFrom(address(this), msg.sender, tokenId);
+    //     idToMarketItem[itemId].owner = payable(msg.sender);
+    //     idToMarketItem[itemId].review = true;
+    //     idToMarketItem[itemId].sold = true;
+    // }
 
     function fetchMarketItems() public view returns (MarketItem[] memory) {
         uint itemCount = _itemIds.current();

@@ -47,8 +47,9 @@ export default function myItems() {
           owner: i.owner,
           sold: i.sold,
           review: i.review,
-          rating: i.rating,
-          details: i.details,
+          sellerAddress: meta.data.sellerAddress,
+          rating: meta.data.rating,
+          details: meta.data.details,
           image: meta.data.image,
           name: meta.data.name,
           descrption: meta.data.descrption,
@@ -70,9 +71,12 @@ export default function myItems() {
           owner: i.owner,
           sold: i.sold,
           review: i.review,
-          rating: i.rating,
-          details: i.details,
+          sellerAddress: meta.data.sellerAddress,
+          rating: meta.data.rating,
+          details: meta.data.details,
           image: meta.data.image,
+          name: meta.data.name,
+          descrption: meta.data.descrption,
         }
         return item
       }))
@@ -101,11 +105,12 @@ export default function myItems() {
       }
     }
 
-    async function createMarketReview(e, seller) {
-      const { rating, details } = formInput
+    async function createMarketReview(e) {
+      const { rating, details, sellerAddress } = formInput
       if (!rating || !details || !fileUrl) return
+      console.log()
       const data = JSON.stringify({
-        rating, details, image: fileUrl, seller
+        rating, details, image: fileUrl, sellerAddress
       }) 
 
       try {
@@ -141,25 +146,24 @@ export default function myItems() {
         itemaddress, tokenId, price, { value: listingPrice }
       )
       await transaction.wait()
-      // completeReview()
-      router.push('/profile')
+      loadItems()
     }
 
-    async function completeReview(review) {
-      const web3modal = new Web3Modal()                               // checks for wallet
-      const connection = await web3modal.connect()                    // connect to wallet
-      const provider = new ethers.providers.Web3Provider(connection)  // that wallet address becomes the provider
+    // async function completeReview(review) {
+    //   const web3modal = new Web3Modal()                               // checks for wallet
+    //   const connection = await web3modal.connect()                    // connect to wallet
+    //   const provider = new ethers.providers.Web3Provider(connection)  // that wallet address becomes the provider
   
-      const signer = provider.getSigner()                             // need contract so sign/approve transaction
-      const contract = new ethers.Contract(itemmarketaddress, Market.abi, signer)
+    //   const signer = provider.getSigner()                             // need contract so sign/approve transaction
+    //   const contract = new ethers.Contract(itemmarketaddress, Market.abi, signer)
   
-      const price = ethers.utils.parseUnits('0', 'ether')
+    //   const price = ethers.utils.parseUnits('0', 'ether')
   
-      const transaction = await contract.trasactReview(itemaddress, review.tokenId, {
-        value: price
-      })
-      await transaction.wait()
-    }
+    //   const transaction = await contract.trasactReview(itemaddress, review.tokenId, {
+    //     value: price
+    //   })
+    //   await transaction.wait()
+    // }
 
     // if (loadingState == 'loaded' && items.length <= 0) return (
     //   <h1 className="px-20 py-10 text-3xl">You do not have any listings</h1>
@@ -180,7 +184,12 @@ export default function myItems() {
                   </div>
                   <div className="mx-3 mb-3 text-center shadow rounded-2xl p-4 bg-indigo-300">
                     <p className="text-xl my-auto font-bold text-blue-500">Leave Review</p>
-                    <div>
+                    <div className="content-center">
+                      <input
+                        placeholder="Seller"
+                        className="mt-2 shadow-inner border rounded-2xl"
+                        onChange={e => updateFormInput({ ...formInput, sellerAddress: e.target.value })}
+                      />
                       <input
                         placeholder="Rating"
                         className="mt-2 shadow-inner border rounded-2xl p-4"
@@ -262,6 +271,7 @@ export default function myItems() {
                 <div key={i} className="border shadow rounded-xl overflow-hidden">
                   <img src={item.image} className="rounded" />
                   <div className="mx-3 mb-3 text-center shadow rounded-2xl p-4 bg-indigo-300">
+                    <p className="text-xl my-auto font-bold text-blue-500">Seller:<br></br>{item.sellerAddress}</p>
                     <p className="text-xl my-auto font-bold text-blue-500">Rating:<br></br>{item.rating}</p>
                     <p className="text-xl my-auto font-bold text-blue-500">Additional Details:<br></br>{item.details}</p>
                   </div>
