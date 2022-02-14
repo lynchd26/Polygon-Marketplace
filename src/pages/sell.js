@@ -17,7 +17,7 @@ const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0')
 export default function CreateItem () {
     const [fileUrl, setFileUrl] = useState(null)
     const [formInput, updateFormInput] = useState({ price: '', name: '', desc: '' })
-    const [selectedCategory, setCategory] = useState({category: "b"});
+    const [selectedCategory, setCategory] = useState({category: 'other'});
     const router = useRouter()
 
     // uploads file to IPFS and creates URL
@@ -96,31 +96,19 @@ export default function CreateItem () {
                     className="mt-2 shadow-inner border rounded-2xl p-4"
                     onChange={e => updateFormInput({ ...formInput, desc: e.target.value })}
                 />
-                {/* <input
-                    placeholder="Category"
-                    className="mt-2 shadow-inner border rounded-2xl p-4"
-                    onChange={e => updateFormInput({ ... formInput, category: e.target.value })}
-                /> */}
-                {/* <select type="select" className="mt-2 shadow-inner border rounded p-4">
-                    <option value="cars">cars</option>
-                    <option value="clothes">clothes</option>
-                    <option value="fones">fones</option>
-                    <option value="other">other</option>
-                    onChange={e => updateFormInput({ ...formInput, category: e.target.value })}
-                </select> */}
                 <select
                     value={selectedCategory}
                     onChange={(e) => {
                         setCategory(e.target.value);
                     }}
                 >
-                    <option value="Cars">Cars</option>
-                    <option value="Clothing & Sneakers">Clothes</option>
-                    <option value="Electronics">Electronics</option>
-                    <option value="Sports & Leisure">Sports</option>
-                    <option value="Home & DIY">Home</option>
-                    <option value="Music & Education">Music</option>
-                    <option value="Other">Other</option>
+                    <option value="cars">Cars</option>
+                    <option value="clothing">Clothing & Sneakers</option>
+                    <option value="electronics">Electronics</option>
+                    <option value="sports">Sports & Leisure</option>
+                    <option value="home">Home & DIY</option>
+                    <option value="music">Music & Education</option>
+                    <option value="other">Other</option>
                 </select>
                 <input
                     placeholder="Price (Matic)"

@@ -149,25 +149,6 @@ export default function myItems() {
       loadItems()
     }
 
-    // async function completeReview(review) {
-    //   const web3modal = new Web3Modal()                               // checks for wallet
-    //   const connection = await web3modal.connect()                    // connect to wallet
-    //   const provider = new ethers.providers.Web3Provider(connection)  // that wallet address becomes the provider
-  
-    //   const signer = provider.getSigner()                             // need contract so sign/approve transaction
-    //   const contract = new ethers.Contract(itemmarketaddress, Market.abi, signer)
-  
-    //   const price = ethers.utils.parseUnits('0', 'ether')
-  
-    //   const transaction = await contract.trasactReview(itemaddress, review.tokenId, {
-    //     value: price
-    //   })
-    //   await transaction.wait()
-    // }
-
-    // if (loadingState == 'loaded' && items.length <= 0) return (
-    //   <h1 className="px-20 py-10 text-3xl">You do not have any listings</h1>
-    // )
   
     return (
       <div className="">
@@ -217,12 +198,6 @@ export default function myItems() {
                       >
                         Submit Review
                       </button>
-                      {/* <button 
-                          className="w-2/3 bg-slate-400 font-bold py-2 px-12 rounded-2xl text-white hover:rounded-3xl hover:shadow transition-all duration-600"
-                          onClick={() => completeReview(item)}>
-                          Complete Review
-                      </button> */}
-
                     </div>
                   </div>
                 </div>

@@ -150,20 +150,6 @@ contract PolygonMarketplace is ReentrancyGuard {
     }
 
 
-    // function transactMarketReview(
-    //     address itemContract,
-    //     uint itemId
-    // ) public payable nonReentrant {
-    //     uint price = idToMarketItem[itemId].price;
-    //     uint tokenId = idToMarketItem[itemId].tokenId;
-    //     require(msg.value == price);
-
-    //     IERC721(itemContract).transferFrom(address(this), msg.sender, tokenId);
-    //     idToMarketItem[itemId].owner = payable(msg.sender);
-    //     idToMarketItem[itemId].review = true;
-    //     idToMarketItem[itemId].sold = true;
-    // }
-
     function fetchMarketItems() public view returns (MarketItem[] memory) {
         uint itemCount = _itemIds.current();
         uint unsoldItemCount = _itemIds.current() - _itemsSold.current();
