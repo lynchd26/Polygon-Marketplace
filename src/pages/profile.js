@@ -20,6 +20,8 @@ export default function myItems() {
     const [items, setItems] = useState([])
     const [sold, setSold] = useState([])
     const [review, setReview] = useState([])
+    const [_filter, setFilter] = useState('all')
+    const [filteredItems, setFilteredItems] = useState([])
     const [loadingState, setLoadingState] = useState('not-loaded')
   
     useEffect(() => {
@@ -87,30 +89,37 @@ export default function myItems() {
       const isReview = solditems.filter(i => i.review)
       setReview(isReview)
 
+      // if (search == 'all') {
+      //     setFilteredItems(filteredItems)
+      // } else {
+      //     const filteredItems = sold
+      // }
+
+
       setLoadingState('loaded')
     }
 
-    const [fileUrl, setFileUrl] = useState(null)
+    // const [fileUrl, setFileUrl] = useState(null)
     const [formInput, updateFormInput] = useState({rating: '', details: ''})
     const router = useRouter()
 
-    async function onChange(e) {    // onChange is invoked by an event 'e'
-      const file = e.target.files[0]
-      try {
-          const added = await client.add(file)
-          const url = `https:ipfs.infura.io/ipfs/${added.path}`
-          setFileUrl(url)
-      } catch (e) {
-          console.log(e)
-      }
-    }
+    // async function onChange(e) {    // onChange is invoked by an event 'e'
+    //   const file = e.target.files[0]
+    //   try {
+    //       const added = await client.add(file)
+    //       const url = `https:ipfs.infura.io/ipfs/${added.path}`
+    //       setFileUrl(url)
+    //   } catch (e) {
+    //       console.log(e)
+    //   }
+    // }
 
     async function createMarketReview(e) {
       const { rating, details, sellerAddress } = formInput
-      if (!rating || !details || !fileUrl) return
+      if (!rating || !details) return
       console.log()
       const data = JSON.stringify({
-        rating, details, image: fileUrl, sellerAddress
+        rating, details, sellerAddress
       }) 
 
       try {
@@ -181,17 +190,6 @@ export default function myItems() {
                         className="mt-2 shadow-inner border rounded-2xl p-4"
                         onChange={e => updateFormInput({ ...formInput, details: e.target.value })}
                       />
-                      <input
-                        type="file"
-                        name="Item"
-                        className="mt-2 rounded-2xl p-4"
-                        onChange={onChange}
-                      />
-                      {
-                          fileUrl && (
-                              <img className="mx-auto rounded-2xl mt-4" width="128" src={fileUrl} />
-                          )
-                      }
                       <button
                           className="font-bold mt-4 bg-indigo-200 text-blue-500 rounded-xl hover:rounded-2xl duration-500 p-4 shadow-xl hover:bg-indigo-100"
                           onClick={ createMarketReview }
@@ -241,10 +239,14 @@ export default function myItems() {
         <div className="p-4">
           <p className="mt-4 text-3xl text-bold text-violet-500">My Reviews</p>
           <div>
-          {
+            {/* <input
+              placeholder="Search seller address"
+              onChange={e => setFilter({ ..._filter, details: e.target.value })}
+            /> */}
+            {
               review.map((item, i) => (
                 <div key={i} className="border shadow rounded-xl overflow-hidden">
-                  <img src={item.image} className="rounded" />
+                  {/* <img src={item.image} className="rounded" /> */}
                   <div className="mx-3 mb-3 text-center shadow rounded-2xl p-4 bg-indigo-300">
                     <p className="text-xl my-auto font-bold text-blue-500">Seller:<br></br>{item.sellerAddress}</p>
                     <p className="text-xl my-auto font-bold text-blue-500">Rating:<br></br>{item.rating}</p>

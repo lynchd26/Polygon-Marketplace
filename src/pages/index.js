@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import axios from 'axios'
 import Web3Modal from 'web3modal'
 import { useRouter } from "next/router"
+import Swal from 'sweetalert2'
 
 
 import {
@@ -12,16 +13,17 @@ import {
 import Item from '../artifacts/contracts/Item.sol/Item.json'
 import Market from '../artifacts/contracts/PolygonMarketplace.sol/PolygonMarketplace.json'
 
+
 export default function Home() {
   const [items, setItems] = useState([])
-  const [_filter, setFilter] = useState('default')
+  const [_filter, setFilter] = useState('all')
   const [filteredItems, setFilteredItems] = useState([])
   const router = useRouter()
 
   const [loadingState, setLoadingState] = useState('not-loaded')
 
   useEffect(() => {
-    loadItems()   // invokes the loadItems function when the page loads
+    loadItems()
   }, [])
 
 
@@ -55,8 +57,12 @@ export default function Home() {
     const saleItems = items.filter(i => !i.review)
     setItems(saleItems)
 
-    const filteredItems = saleItems.filter(i => i.category == _filter)
-    setFilteredItems(filteredItems)
+    if (_filter == 'all') {
+      setFilteredItems(saleItems)
+    } else {
+      const filteredItems = saleItems.filter(i => i.category == _filter)
+      setFilteredItems(filteredItems)
+    }
 
     setLoadingState('loaded')
   }
@@ -85,17 +91,19 @@ export default function Home() {
   )
 
   return (
-    <div className=''>
+    <div className='ml-6'>
       <select
           value={_filter}
           onChange={(e) => {
               setFilter(e.target.value);
               loadItems(_filter);
               console.log("FILTER 1: ", _filter)
+              setFilter(e.target.value);
               console.log("FILTER 2: ", e.target.value)
               router.push('/')
             }}
       >
+          <option value="all">All Items</option>
           <option value="cars">Cars</option>
           <option value="clothing">Clothing & Sneakers</option>
           <option value="electronics">Electronics</option>
@@ -105,13 +113,24 @@ export default function Home() {
           <option value="other">Other</option>
         </select>
         <div className="flex-center">
-        <p className="mt-4 text-3xl text-bold text-violet-500">All</p>
+        <p className="ml-6 mt-4 text-3xl text-bold text-violet-500">All</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
           {
             items.map((item, i) => (
               <div key={i} className="mx-6 bg-white text-center border border-violet shadow shadow-violet-400 rounded-2xl overflow-hidden">
                 <img src={item.image} className="m-2"/>
-                <div className="p-4">
+                <div className="p-2">
+                  <button 
+                    onClick={() => navigator.clipboard.writeText(item.seller)}
+                    onClick={() => Swal.fire({
+                      title: 'Copied Seller Address to Clipboard!',
+                      text: 'Go to blockscan and paste the addres to contact seller.',
+                      footer: '<a href="https://chat.blockscan.com" target="_blank">Go to Blockscan...</a>'
+                    })
+                    }
+                  >
+                    Copy Seller address
+                  </button>
                   <p className="my-2 text-2xl text-violet-400 font-semibold">{item.category}</p>
                   <p className="my-2 text-2xl text-violet-400 font-semibold">{item.name}</p>
                   <p className="my-2 text-2xl text-violet-400 font-semibold">{item.desc}</p>
@@ -132,6 +151,12 @@ export default function Home() {
               <div key={i} className="mx-6 bg-white text-center border border-violet shadow shadow-violet-400 rounded-2xl overflow-hidden">
                 <img src={item.image} className="m-2"/>
                 <div className="p-4">
+                  <button 
+                    onClick={() =>  navigator.clipboard.writeText(item.seller)}
+                    onClick={() => alert(item.seller + "\n\nCopied Seller Address to Clipboard!\nPaste this address in blockscan to message the seller\n\nhttps://chat.blockscan.com")}
+                  >
+                    Copy Seller address
+                  </button>
                   <p className="my-2 text-2xl text-violet-400 font-semibold">{item.category}</p>
                   <p className="my-2 text-2xl text-violet-400 font-semibold">{item.name}</p>
                   <p className="my-2 text-2xl text-violet-400 font-semibold">{item.desc}</p>
