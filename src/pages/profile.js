@@ -138,7 +138,7 @@ export default function myItems() {
       const price = ethers.utils.parseUnits('0', 'ether')
 
       contract = new ethers.Contract(itemmarketaddress, Market.abi, signer)
-      let listingPrice = await contract.getListingPrice()
+      let listingPrice = await contract.getReviewListingPrice()
       listingPrice = listingPrice.toString()
       
       transaction = await contract.createReview(

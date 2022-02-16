@@ -16,6 +16,7 @@ contract PolygonMarketplace is ReentrancyGuard {
 
     address payable owner;
     uint256 listPrice = 0.1 ether;
+    uint256 reviewListPrice = 0.0 ether;
 
     constructor() {
         owner = payable(msg.sender);
@@ -61,6 +62,10 @@ contract PolygonMarketplace is ReentrancyGuard {
         return listPrice;
     }
 
+    function getReviewListingPrice() public view returns (uint256) {
+        return reviewListPrice;
+    }
+
     function createMarketItem(
         address itemContract,
         uint256 tokenId,
@@ -102,8 +107,6 @@ contract PolygonMarketplace is ReentrancyGuard {
         uint256 tokenId,
         uint256 price
     ) public payable nonReentrant {
-        // require(price > 0, "Price must be at least XXX");
-        // require(msg.value == listPrice, "Price must be equal to listing price");
         
         _itemIds.increment();
         uint256 itemId = _itemIds.current();
@@ -146,7 +149,11 @@ contract PolygonMarketplace is ReentrancyGuard {
         idToMarketItem[itemId].owner = payable(msg.sender);                         // sets new owner of this item
         idToMarketItem[itemId].sold = true;
         _itemsSold.increment();
-        payable(owner).transfer(listPrice);                                         // owner of marketplace is transferred listing fee
+        if (idToMarketItem[itemId].review) {
+            payable(owner).transfer(reviewListPrice);
+        } else {
+            payable(owner).transfer(listPrice);                                         // owner of marketplace is transferred listing fee
+        }
     }
 
 
