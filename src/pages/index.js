@@ -84,6 +84,15 @@ export default function Home() {
     loadItems()
   }
 
+  async function sellerAdd(address) {
+    navigator.clipboard.writeText(address)
+    
+    Swal.fire({
+      title: 'Copied Seller Address to Clipboard!',
+      text: 'Go to blockscan and paste the addres to contact seller.',
+      footer: '<a href="https://chat.blockscan.com" target="_blank">Go to Blockscan...</a>'
+    })
+  }
 
 
   if (loadingState == 'loaded' && items.length <= 0) return (
@@ -121,13 +130,7 @@ export default function Home() {
                 <img src={item.image} className="m-2"/>
                 <div className="p-2">
                   <button 
-                    onClick={() => navigator.clipboard.writeText(item.seller)}
-                    onClick={() => Swal.fire({
-                      title: 'Copied Seller Address to Clipboard!',
-                      text: 'Go to blockscan and paste the addres to contact seller.',
-                      footer: '<a href="https://chat.blockscan.com" target="_blank">Go to Blockscan...</a>'
-                    })
-                    }
+                    onClick={() =>  sellerAdd(item.seller)}
                   >
                     Copy Seller address
                   </button>
@@ -152,8 +155,7 @@ export default function Home() {
                 <img src={item.image} className="m-2"/>
                 <div className="p-4">
                   <button 
-                    onClick={() =>  navigator.clipboard.writeText(item.seller)}
-                    onClick={() => alert(item.seller + "\n\nCopied Seller Address to Clipboard!\nPaste this address in blockscan to message the seller\n\nhttps://chat.blockscan.com")}
+                    onClick={() =>  sellerAdd(item.seller)}
                   >
                     Copy Seller address
                   </button>

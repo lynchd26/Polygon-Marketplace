@@ -20,6 +20,7 @@ export default function myItems() {
     const [items, setItems] = useState([])
     const [sold, setSold] = useState([])
     const [review, setReview] = useState([])
+
     const [_filter, setFilter] = useState('all')
     const [filteredItems, setFilteredItems] = useState([])
     const [loadingState, setLoadingState] = useState('not-loaded')
@@ -49,7 +50,7 @@ export default function myItems() {
           owner: i.owner,
           sold: i.sold,
           review: i.review,
-          sellerAddress: meta.data.sellerAddress,
+          addr: meta.data.addr,
           rating: meta.data.rating,
           details: meta.data.details,
           image: meta.data.image,
@@ -73,7 +74,7 @@ export default function myItems() {
           owner: i.owner,
           sold: i.sold,
           review: i.review,
-          sellerAddress: meta.data.sellerAddress,
+          addr: meta.data.addr,
           rating: meta.data.rating,
           details: meta.data.details,
           image: meta.data.image,
@@ -99,27 +100,14 @@ export default function myItems() {
       setLoadingState('loaded')
     }
 
-    // const [fileUrl, setFileUrl] = useState(null)
     const [formInput, updateFormInput] = useState({rating: '', details: ''})
     const router = useRouter()
 
-    // async function onChange(e) {    // onChange is invoked by an event 'e'
-    //   const file = e.target.files[0]
-    //   try {
-    //       const added = await client.add(file)
-    //       const url = `https:ipfs.infura.io/ipfs/${added.path}`
-    //       setFileUrl(url)
-    //   } catch (e) {
-    //       console.log(e)
-    //   }
-    // }
-
-    async function createMarketReview(e) {
-      const { rating, details, sellerAddress } = formInput
-      if (!rating || !details) return
-      console.log()
+    async function createMarketReview(addr) {
+      const { rating, details } = formInput
+      if (!rating || !details || !addr) return
       const data = JSON.stringify({
-        rating, details, sellerAddress
+        rating, details, addr
       }) 
 
       try {
@@ -169,17 +157,11 @@ export default function myItems() {
                 <div key={i} className="border shadow rounded-xl overflow-hidden">
                   <img src={item.image} className="rounded" />
                   <div className="mx-3 mb-3 text-center shadow rounded-2xl p-4 bg-indigo-300">
-                    <p className="mx-auto text-blue-500">Seller:<br></br>{item.seller}</p>
                     <p className="text-xl my-auto font-bold text-blue-500">Purchase price:<br></br>{item.price} MATIC</p>
                   </div>
                   <div className="mx-3 mb-3 text-center shadow rounded-2xl p-4 bg-indigo-300">
                     <p className="text-xl my-auto font-bold text-blue-500">Leave Review</p>
                     <div className="content-center">
-                      <input
-                        placeholder="Seller"
-                        className="mt-2 shadow-inner border rounded-2xl"
-                        onChange={e => updateFormInput({ ...formInput, sellerAddress: e.target.value })}
-                      />
                       <input
                         placeholder="Rating"
                         className="mt-2 shadow-inner border rounded-2xl p-4"
@@ -192,7 +174,7 @@ export default function myItems() {
                       />
                       <button
                           className="font-bold mt-4 bg-indigo-200 text-blue-500 rounded-xl hover:rounded-2xl duration-500 p-4 shadow-xl hover:bg-indigo-100"
-                          onClick={ createMarketReview }
+                          onClick={() => createMarketReview(item.seller)}
                       >
                         Submit Review
                       </button>
@@ -248,7 +230,7 @@ export default function myItems() {
                 <div key={i} className="border shadow rounded-xl overflow-hidden">
                   {/* <img src={item.image} className="rounded" /> */}
                   <div className="mx-3 mb-3 text-center shadow rounded-2xl p-4 bg-indigo-300">
-                    <p className="text-xl my-auto font-bold text-blue-500">Seller:<br></br>{item.sellerAddress}</p>
+                    <p className="text-xl my-auto font-bold text-blue-500">Seller:<br></br>{item.addr}</p>
                     <p className="text-xl my-auto font-bold text-blue-500">Rating:<br></br>{item.rating}</p>
                     <p className="text-xl my-auto font-bold text-blue-500">Additional Details:<br></br>{item.details}</p>
                   </div>
