@@ -38,7 +38,7 @@ export default function CreateItem () {
         // create the listing
         const { name, desc, price } = formInput
         const category = selectedCategory
-        if (!name || !desc || !price || !fileUrl) return // listing must contain all of these, otherwise return
+        if (!name || !desc || !price || !fileUrl || !category || category=="Select Category..") return // listing must contain all of these, otherwise return
         const data = JSON.stringify({
             name, desc, category, image: fileUrl
         })
@@ -102,6 +102,7 @@ export default function CreateItem () {
                         setCategory(e.target.value);
                     }}
                 >
+                    <option value="Select Category..">Select Category..</option>
                     <option value="Cars">Cars</option>
                     <option value="Clothing & Sneakers">Clothes</option>
                     <option value="Electronics">Electronics</option>
