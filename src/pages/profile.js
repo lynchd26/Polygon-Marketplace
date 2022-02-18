@@ -86,23 +86,31 @@ export default function myItems() {
         return item
       }))
 
+      async function searchReviews(query) {
+        setReviewFilter(query)
+        loadItems()
+      }
+
       const soldItems = solditems.filter(i => i.sold && !i.review)
       setSold(soldItems)
 
       const isReview = solditems.filter(i => i.review)
-      setReview(isReview)
+      // setReview(isReview)
 
-      // if (search == 'all') {
-      //     setFilteredItems(filteredItems)
-      // } else {
-      //     const filteredItems = sold
-      // }
+
+      if (reviewFilter == '') {
+        setReview(isReview)
+      } else {
+        const filteredReview = solditems.filter(i => i.review && i.addr == reviewFilter)
+        setReview(filteredReview)
+      }
 
 
       setLoadingState('loaded')
     }
 
     const [formInput, updateFormInput] = useState({rating: '', details: ''})
+    const [reviewFilter, setReviewFilter] = useState('')
     const router = useRouter()
 
     async function createMarketReview(addr, reviewName, fileUrl) {
@@ -223,14 +231,20 @@ export default function myItems() {
         <div className="p-4">
           <p className="mt-4 text-3xl text-bold text-violet-500">My Reviews</p>
           <div>
-            {/* <input
-              placeholder="Search seller address"
-              onChange={e => setFilter({ ..._filter, details: e.target.value })}
-            /> */}
+            <input
+              placeholder="Search an address.."
+              className="mt-2 shadow-inner border rounded-2xl p-4"
+              onChange={e => setReviewFilter(e.target.value)}
+            />
+            <button
+              onClick={() => loadItems()}
+            >
+              Search
+            </button>
+
             {
               review.map((item, i) => (
                 <div key={i} className="border shadow rounded-xl overflow-hidden">
-                  {/* <img src={item.image} className="rounded" /> */}
                   <div className="mx-3 mb-3 text-center shadow rounded-2xl p-4 bg-indigo-300">
                     <p className="text-xl my-auto font-bold text-blue-500">Seller: {item.addr}</p>
                     <img src={item.image} className="rounded" />

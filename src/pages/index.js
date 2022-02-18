@@ -89,7 +89,7 @@ export default function Home() {
     
     Swal.fire({
       title: 'Copied Seller Address to Clipboard!',
-      text: 'Go to blockscan and paste the addres to contact seller.',
+      text: 'Go to blockscan and paste the address to contact seller.',
       footer: '<a href="https://chat.blockscan.com" target="_blank">Go to Blockscan...</a>'
     })
   }
