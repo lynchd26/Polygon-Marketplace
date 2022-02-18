@@ -85,18 +85,40 @@ export default function myItems() {
         }
         return item
       }))
+      const soldItems = solditems.filter(i => i.sold && !i.review)
+      setSold(soldItems)
+
+
+      const __data = await marketContract.fetchMarketItems()
+
+      const reviewItems = await Promise.all(__data.map(async i => {
+        const tokenUri = await tokenContract.tokenURI(i.tokenId)
+        const meta = await axios.get(tokenUri)
+        let price = ethers.utils.formatUnits(i.price.toString(), 'ether')
+        let item = {
+          price,
+          tokenId: i.tokenId.toNumber(),
+          seller: i.seller,
+          owner: i.owner,
+          sold: i.sold,
+          review: i.review,
+          addr: meta.data.addr,
+          reviewName: meta.data.reviewName,
+          rating: meta.data.rating,
+          details: meta.data.details,
+          image: meta.data.image,
+          name: meta.data.name,
+          descrption: meta.data.descrption,
+        }
+        return item
+      }))
+      const isReview = reviewItems.filter(i => i.review)
+
 
       async function searchReviews(query) {
         setReviewFilter(query)
         loadItems()
       }
-
-      const soldItems = solditems.filter(i => i.sold && !i.review)
-      setSold(soldItems)
-
-      const isReview = solditems.filter(i => i.review)
-      // setReview(isReview)
-
 
       if (reviewFilter == '') {
         setReview(isReview)
@@ -155,7 +177,7 @@ export default function myItems() {
       await transaction.wait()
       loadItems()
     }
-
+  
   
     return (
       <div className="">

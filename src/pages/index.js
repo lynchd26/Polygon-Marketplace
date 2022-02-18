@@ -16,7 +16,7 @@ import Market from '../artifacts/contracts/PolygonMarketplace.sol/PolygonMarketp
 
 export default function Home() {
   const [items, setItems] = useState([])
-  const [_filter, setFilter] = useState('all')
+  const [_filter, setFilter] = useState()
   const [filteredItems, setFilteredItems] = useState([])
   const router = useRouter()
 
@@ -27,17 +27,17 @@ export default function Home() {
   }, [])
 
 
-  async function loadItems() {
+  async function loadItems(__filter='All') {
     const provider = new ethers.providers.JsonRpcProvider()
     const tokenContract = new ethers.Contract(itemaddress, Item.abi, provider)
     const marketContract = new ethers.Contract(itemmarketaddress, Market.abi, provider)
     const data = await marketContract.fetchMarketItems()
 
+    setFilter(__filter)
     const items = await Promise.all(data.map(async i => {   // map over all unsold items pulled by fetchMarketItems
       const tokenUri = await tokenContract.tokenURI(i.tokenId)
       const meta = await axios.get(tokenUri)                // metadata pulled from tokenUri 
       let price = ethers.utils.formatUnits(i.price.toString(), 'ether')
-      console.log(_filter)
       let item = {
         price,
         tokenId: i.tokenId.toNumber(),
@@ -57,10 +57,10 @@ export default function Home() {
     const saleItems = items.filter(i => !i.review)
     setItems(saleItems)
 
-    if (_filter == 'all') {
+    if (_filter == 'All') {
       setFilteredItems(saleItems)
     } else {
-      const filteredItems = saleItems.filter(i => i.category == _filter)
+      const filteredItems = saleItems.filter(i => i.category == __filter)
       setFilteredItems(filteredItems)
     }
 
@@ -101,25 +101,20 @@ export default function Home() {
 
   return (
     <div className='ml-6'>
-      <select
-          value={_filter}
-          onChange={(e) => {
-              setFilter(e.target.value);
-              loadItems(_filter);
-              console.log("FILTER 1: ", _filter)
-              setFilter(e.target.value);
-              console.log("FILTER 2: ", e.target.value)
-              router.push('/')
-            }}
-      >
-          <option value="all">All Items</option>
-          <option value="cars">Cars</option>
-          <option value="clothing">Clothing & Sneakers</option>
-          <option value="electronics">Electronics</option>
-          <option value="sports">Sports & Leisure</option>
-          <option value="home">Home & DIY</option>
-          <option value="music">Music & Education</option>
-          <option value="other">Other</option>
+        <select
+            onChange={(e) => {
+                // setFilter(e.target.value);
+                loadItems(e.target.value);
+              }}
+        >
+          <option value="All">All</option>
+          <option value="Cars">Cars</option>
+          <option value="Clothing & Sneakers">Clothes</option>
+          <option value="Electronics">Electronics</option>
+          <option value="Sports & Leisure">Sports</option>
+          <option value="Home & DIY">Home</option>
+          <option value="Music & Education">Music</option>
+          <option value="Other">Other</option>
         </select>
         <div className="flex-center">
         <p className="ml-6 mt-4 text-3xl text-bold text-violet-500">All</p>
