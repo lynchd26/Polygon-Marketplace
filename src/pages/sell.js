@@ -97,6 +97,7 @@ export default function CreateItem () {
                     onChange={e => updateFormInput({ ...formInput, desc: e.target.value })}
                 />
                 <select
+                    className="mt-2 p-2 rounded-2xl"
                     value={selectedCategory}
                     onChange={(e) => {
                         setCategory(e.target.value);
