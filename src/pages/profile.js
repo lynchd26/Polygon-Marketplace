@@ -188,11 +188,9 @@ export default function myItems() {
               items.map((item, i) => (
                 <div key={i} className="border shadow rounded-xl overflow-hidden">
                   <img src={item.image} className="rounded" />
-                  <div className="mx-3 mb-3 text-center shadow rounded-2xl p-4 bg-indigo-300">
-                    <p className="text-xl my-auto font-bold text-blue-500">Purchase price:<br></br>{item.price} MATIC</p>
-                  </div>
-                  <div className="mx-3 mb-3 text-center shadow rounded-2xl p-4 bg-indigo-300">
-                    <p className="text-xl my-auto font-bold text-blue-500">Leave Review</p>
+                  <p className="text-xl my-2 text-center font-bold text-violet-300">Purchase price:<br></br>{item.price} MATIC</p>
+                  <div className="mx-3 mb-3 text-center shadow rounded-2xl p-4 bg-violet-400">
+                    <p className="text-xl my-auto font-bold text-white">Leave Review</p>
                     <div className="content-center">
                       <input
                         placeholder="Rating"
@@ -205,7 +203,7 @@ export default function myItems() {
                         onChange={e => updateFormInput({ ...formInput, details: e.target.value })}
                       />
                       <button
-                          className="font-bold mt-4 bg-indigo-200 text-blue-500 rounded-xl hover:rounded-2xl duration-500 p-4 shadow-xl hover:bg-indigo-100"
+                          className="font-bold mt-4 bg-violet-200 text-violet-400 rounded-xl hover:rounded-2xl duration-500 p-4 shadow-xl hover:bg-white"
                           onClick={() => createMarketReview(item.seller, item.name, item.image)}
                       >
                         Submit Review
@@ -252,7 +250,6 @@ export default function myItems() {
         </div>
         <div className="p-4">
           <p className="mt-4 text-3xl text-bold text-violet-500">My Reviews</p>
-          <div>
             <input
               placeholder="Search an address.."
               className="mt-2 shadow-inner border rounded-2xl p-4"
@@ -263,21 +260,23 @@ export default function myItems() {
             >
               Search
             </button>
-
-            {
-              review.map((item, i) => (
-                <div key={i} className="border shadow rounded-xl overflow-hidden">
-                  <div className="mx-3 mb-3 text-center shadow rounded-2xl p-4 bg-indigo-300">
-                    <p className="text-xl my-auto font-bold text-blue-500">Seller: {item.addr}</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
+              {
+                review.map((item, i) => (
+                  <div key={i} className="mx-6 bg-white text-center border border-violet shadow shadow-violet-400 rounded-2xl overflow-hidden">
+                    <div className="mb-3 text-center shadow rounded-xl py-4 bg-violet-400">
+                      <p className="my-2 text-white">Seller: {item.addr}</p>
+                    </div>
                     <img src={item.image} className="rounded" />
-                    <p className="text-xl my-auto font-bold text-blue-500">Name: {item.reviewName}</p>
-                    <p className="text-xl my-auto font-bold text-blue-500">Rating: {item.rating}</p>
-                    <p className="text-xl my-auto font-bold text-blue-500">Additional Details: {item.details}</p>
+                    <div className="mx-3 mb-3 text-center shadow rounded-2xl p-4 bg-violet-400">
+                      <p className="my-2 text-xl text-white font-semibold">Name: {item.reviewName}</p>
+                      <p className="my-2 text-xl text-white font-semibold">Rating: {item.rating}</p>
+                      <p className="my-2 text-xl text-white font-semibold">Additional Details: {item.details}</p>
+                    </div>
                   </div>
-                </div>
               ))
             }
-          </div>
+            </div>
         </div>
       </div>
     )

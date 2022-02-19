@@ -134,8 +134,8 @@ export default function Home() {
                   <p className="my-2 text-2xl text-violet-400 font-semibold">{item.desc}</p>
                 </div>
                 <div className="mx-3 mb-3 text-center shadow rounded-2xl p-4 bg-violet-300">
-                  <p className="text-2xl mb-4 font-bold text-slate-100">{item.price} MATIC</p>
-                  <button className="w-2/3 bg-slate-400 font-bold py-2 px-12 rounded-2xl text-white hover:rounded-3xl hover:shadow transition-all duration-600" onClick={() => buyItem(item)}>Buy</button>
+                  <p className="text-2xl mb-4 font-bold text-white">{item.price} MATIC</p>
+                  <button className="w-2/3 bg-violet-400 font-bold py-2 px-12 rounded-2xl text-white hover:rounded-3xl hover:shadow transition-all duration-1000" onClick={() => buyItem(item)}>Buy</button>
                 </div> 
               </div>
             ))
@@ -159,8 +159,8 @@ export default function Home() {
                   <p className="my-2 text-2xl text-violet-400 font-semibold">{item.desc}</p>
                 </div>
                 <div className="mx-3 mb-3 text-center shadow rounded-2xl p-4 bg-violet-300">
-                  <p className="text-2xl mb-4 font-bold text-slate-100">{item.price} MATIC</p>
-                  <button className="w-2/3 bg-slate-400 font-bold py-2 px-12 rounded-2xl text-white hover:rounded-3xl hover:shadow transition-all duration-600" onClick={() => buyItem(item)}>Buy</button>
+                  <p className="text-2xl mb-4 font-bold text-white">{item.price} MATIC</p>
+                  <button className="w-2/3 bg-violet-400 font-bold py-2 px-12 rounded-2xl text-white hover:rounded-3xl hover:shadow transition-all duration-1000" onClick={() => buyItem(item)}>Buy</button>
                 </div> 
               </div>
             ))
