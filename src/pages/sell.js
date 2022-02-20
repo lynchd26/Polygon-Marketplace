@@ -85,6 +85,7 @@ export default function CreateItem () {
 
     return(
         <div className="flex justify-center">
+            <title>List an item</title>
             <div className="w-1/2 flex flex-col pb-12">
                 <input
                     placeholder="Name"
@@ -97,12 +98,13 @@ export default function CreateItem () {
                     onChange={e => updateFormInput({ ...formInput, desc: e.target.value })}
                 />
                 <select
+                    className="mt-2 p-2 rounded-2xl"
                     value={selectedCategory}
                     onChange={(e) => {
                         setCategory(e.target.value);
                     }}
                 >
-                    <option value="Select Category..">Select Category..</option>
+                    <option value="Select Category.."selected>Select Category..</option>
                     <option value="Cars">Cars</option>
                     <option value="Clothing & Sneakers">Clothes</option>
                     <option value="Electronics">Electronics</option>
@@ -128,7 +130,7 @@ export default function CreateItem () {
                     )
                 }
                 <button
-                    className="font-bold mt-4 bg-indigo-200 text-blue-500 rounded-2xl p-4 shadow-xl hover:bg-indigo-300"
+                    className="font-bold mt-4 bg-violet-300 text-white rounded-2xl p-4 shadow-xl hover:bg-violet-400 transition-all duration-1000"
                     onClick={createMarket}
                     >
                     Create listing

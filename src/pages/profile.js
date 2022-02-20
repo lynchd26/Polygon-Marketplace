@@ -19,10 +19,6 @@ const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0')
 export default function myItems() {
     const [items, setItems] = useState([])
     const [sold, setSold] = useState([])
-    const [review, setReview] = useState([])
-
-    const [_filter, setFilter] = useState('all')
-    const [filteredItems, setFilteredItems] = useState([])
     const [loadingState, setLoadingState] = useState('not-loaded')
   
     useEffect(() => {
@@ -85,25 +81,13 @@ export default function myItems() {
         }
         return item
       }))
-
       const soldItems = solditems.filter(i => i.sold && !i.review)
       setSold(soldItems)
-
-      const isReview = solditems.filter(i => i.review)
-      setReview(isReview)
-
-      // if (search == 'all') {
-      //     setFilteredItems(filteredItems)
-      // } else {
-      //     const filteredItems = sold
-      // }
-
 
       setLoadingState('loaded')
     }
 
     const [formInput, updateFormInput] = useState({rating: '', details: ''})
-    const router = useRouter()
 
     async function createMarketReview(addr, reviewName, fileUrl) {
       const { rating, details } = formInput
@@ -147,22 +131,21 @@ export default function myItems() {
       await transaction.wait()
       loadItems()
     }
-
+  
   
     return (
       <div className="">
+        <title>My Profile</title>
         <div className="p-4">
           <p className="mt-4 text-3xl text-bold text-violet-500">My Purchases</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
             {
               items.map((item, i) => (
                 <div key={i} className="border shadow rounded-xl overflow-hidden">
-                  <img src={item.image} className="rounded" />
-                  <div className="mx-3 mb-3 text-center shadow rounded-2xl p-4 bg-indigo-300">
-                    <p className="text-xl my-auto font-bold text-blue-500">Purchase price:<br></br>{item.price} MATIC</p>
-                  </div>
-                  <div className="mx-3 mb-3 text-center shadow rounded-2xl p-4 bg-indigo-300">
-                    <p className="text-xl my-auto font-bold text-blue-500">Leave Review</p>
+                <img src={item.image} className="mt-4 object-contain object-center h-48 w-96"/>
+                  <p className="text-xl my-2 text-center font-bold text-violet-300">Purchase price:<br></br>{item.price} MATIC</p>
+                  <div className="mx-3 mb-3 text-center shadow rounded-2xl p-4 bg-violet-400">
+                    <p className="text-xl my-auto font-bold text-white">Leave Review</p>
                     <div className="content-center">
                       <input
                         placeholder="Rating"
@@ -175,7 +158,7 @@ export default function myItems() {
                         onChange={e => updateFormInput({ ...formInput, details: e.target.value })}
                       />
                       <button
-                          className="font-bold mt-4 bg-indigo-200 text-blue-500 rounded-xl hover:rounded-2xl duration-500 p-4 shadow-xl hover:bg-indigo-100"
+                          className="font-bold mt-4 bg-violet-200 text-violet-400 rounded-xl hover:rounded-2xl duration-500 p-4 shadow-xl hover:bg-white"
                           onClick={() => createMarketReview(item.seller, item.name, item.image)}
                       >
                         Submit Review
@@ -193,7 +176,7 @@ export default function myItems() {
             {
               sold.map((item, i) => (
                 <div key={i} className="border shadow rounded-xl overflow-hidden">
-                  <img src={item.image} className="rounded" />
+                <img src={item.image} className="object-contain h-48 w-96"/>
                   <div className="mx-3 mb-3 text-center shadow rounded-2xl p-4 bg-indigo-300">
                     <p className="text-xl my-auto font-bold text-blue-500">Sale price:<br></br>{item.price} MATIC</p>
                   </div>
@@ -214,29 +197,6 @@ export default function myItems() {
                         Post Review
                       </button>
                     </div>
-                  </div>
-                </div>
-              ))
-            }
-          </div>
-        </div>
-        <div className="p-4">
-          <p className="mt-4 text-3xl text-bold text-violet-500">My Reviews</p>
-          <div>
-            {/* <input
-              placeholder="Search seller address"
-              onChange={e => setFilter({ ..._filter, details: e.target.value })}
-            /> */}
-            {
-              review.map((item, i) => (
-                <div key={i} className="border shadow rounded-xl overflow-hidden">
-                  {/* <img src={item.image} className="rounded" /> */}
-                  <div className="mx-3 mb-3 text-center shadow rounded-2xl p-4 bg-indigo-300">
-                    <p className="text-xl my-auto font-bold text-blue-500">Seller: {item.addr}</p>
-                    <img src={item.image} className="rounded" />
-                    <p className="text-xl my-auto font-bold text-blue-500">Name: {item.reviewName}</p>
-                    <p className="text-xl my-auto font-bold text-blue-500">Rating: {item.rating}</p>
-                    <p className="text-xl my-auto font-bold text-blue-500">Additional Details: {item.details}</p>
                   </div>
                 </div>
               ))

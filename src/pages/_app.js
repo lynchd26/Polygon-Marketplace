@@ -4,6 +4,7 @@ import Link from 'next/link'
 
 function MyApp({ Component, pageProps }) {
   return (
+<<<<<<< HEAD
     <div class="relative min-h-screen md:flex">
 
       {/* mobile menu bar */}
@@ -49,6 +50,40 @@ function MyApp({ Component, pageProps }) {
     
       {/* <!-- content --> */}
     
+=======
+    <div>
+      <nav className="flex bg-white items-center flex-wrap my-4 p-2 border-b-4 border-violet-600">
+        <div className='mb-4'>
+          <Link href="/">
+            <a className="inline-flex ml-4 text-3xl font-bold text-violet-400">
+              Polygon Marketplace
+            </a>
+          </Link>
+        </div>
+        <div className="inline-flex mb-4 lg:ml-auto lg:items-centre">
+          <Link href="/">
+            <a className="flex ml-12 mr-6 text-xl text-slate-400 p-2 rounded-2xl hover:bg-violet-200">
+              Home
+            </a>
+          </Link>
+          <Link href="/sell">
+            <a className="mr-6 text-xl text-slate-400 p-2 rounded-2xl hover:bg-violet-200">
+              Sell
+            </a>
+          </Link>
+          <Link href="/profile">
+            <a className="mr-6 text-xl text-slate-400 p-2 rounded-2xl hover:bg-violet-200">
+              Profile
+            </a>
+          </Link>
+          <Link href="/review">
+            <a className="mr-6 text-xl text-slate-400 p-2 rounded-2xl hover:bg-violet-200">
+              Reviews
+            </a>
+          </Link>
+        </div>
+      </nav>
+>>>>>>> a35c067ad599ab36cfda2e3e7296d8669815b05a
       <Component {...pageProps} />
     
     </div>
