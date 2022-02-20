@@ -85,6 +85,7 @@ export default function CreateItem () {
 
     return(
         <div className="flex justify-center">
+            <title>List an item</title>
             <div className="w-1/2 flex flex-col pb-12">
                 <input
                     placeholder="Name"

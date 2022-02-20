@@ -18,7 +18,6 @@ export default function Home() {
   const [items, setItems] = useState([])
   const [_filter, setFilter] = useState()
   const [filteredItems, setFilteredItems] = useState([])
-  const router = useRouter()
 
   const [loadingState, setLoadingState] = useState('not-loaded')
 
@@ -27,7 +26,7 @@ export default function Home() {
   }, [])
 
 
-  async function loadItems(__filter='All') {
+  async function loadItems(__filter='') {
     const provider = new ethers.providers.JsonRpcProvider()
     const tokenContract = new ethers.Contract(itemaddress, Item.abi, provider)
     const marketContract = new ethers.Contract(itemmarketaddress, Market.abi, provider)
@@ -57,12 +56,12 @@ export default function Home() {
     const saleItems = items.filter(i => !i.review)
     setItems(saleItems)
 
-    if (_filter == 'All') {
-      setFilteredItems(saleItems)
-    } else {
+    // if (_filter == 'All') {
+    //   setFilteredItems(saleItems)
+    // } else {
       const filteredItems = saleItems.filter(i => i.category == __filter)
       setFilteredItems(filteredItems)
-    }
+    //}
 
     setLoadingState('loaded')
   }
@@ -89,34 +88,49 @@ export default function Home() {
     
     Swal.fire({
       title: 'Copied Seller Address to Clipboard!',
-      text: 'Go to blockscan and paste the address to contact seller.',
+      text: 'Go to blockscan and paste the address to contact seller.\nOr paste this address in the reviews tab to see the sellers reviews.',
       footer: '<a href="https://chat.blockscan.com" target="_blank">Go to Blockscan...</a>'
     })
   }
 
 
   if (loadingState == 'loaded' && items.length <= 0) return (
-    <h1 className="px-20 py-10 text-3xl">There are currently no items listed on the markteplace</h1>
+    <div>
+      <title>Polygon Marketplace</title>
+      <h1 className="text-center px-20 py-10 text-3xl">There are currently no items listed on the markteplace. Check back later!</h1>
+    </div>
+  )
+
+  if (loadingState == 'loaded' && filteredItems.length <= 0) return (
+    <div>
+      <title>Polygon Marketplace</title>
+      <div className="flex justify-center">
+      <select
+          className="mt-6 ml-6 mr-6 rounded-xl py-6 px-16 bg-violet-300 text-white text-xl font-bold"
+          onChange={(e) => {
+              loadItems(e.target.value);
+            }}
+      >
+        <option value="Select Category.."selected>Select Category..</option>
+        <option value="Cars">Cars</option>
+        <option value="Clothing & Sneakers">Clothes</option>
+        <option value="Electronics">Electronics</option>
+        <option value="Sports & Leisure">Sports</option>
+        <option value="Home & DIY">Home</option>
+        <option value="Music & Education">Music</option>
+        <option value="Other">Other</option>
+      </select>
+      </div>
+      <div>
+        <h1 className="text-center text-violet-400 px-20 py-10 text-3xl">There are currently no items listed in this category. Check back later!</h1>
+      </div>
+      </div>
   )
 
   return (
     <div className='ml-6'>
-        <select
-            onChange={(e) => {
-                // setFilter(e.target.value);
-                loadItems(e.target.value);
-              }}
-        >
-          <option value="All">All</option>
-          <option value="Cars">Cars</option>
-          <option value="Clothing & Sneakers">Clothes</option>
-          <option value="Electronics">Electronics</option>
-          <option value="Sports & Leisure">Sports</option>
-          <option value="Home & DIY">Home</option>
-          <option value="Music & Education">Music</option>
-          <option value="Other">Other</option>
-        </select>
-        <div className="flex-center">
+        <title>Polygon Marketplace</title>
+        {/* <div className="flex-center">
         <p className="ml-6 mt-4 text-3xl text-bold text-violet-500">All</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
           {
@@ -140,21 +154,37 @@ export default function Home() {
               </div>
             ))
           }
+        </div> */}
+        <div className="flex justify-center">
+        <select
+            className="mt-6 mx-6 rounded-xl py-6 px-16 bg-violet-300 text-white text-xl font-bold"
+            onChange={(e) => {
+                loadItems(e.target.value);
+              }}
+        >
+          <option value="Select Category.."selected>Select Category..</option>
+          <option value="Cars">Cars</option>
+          <option value="Clothing & Sneakers">Clothes</option>
+          <option value="Electronics">Electronics</option>
+          <option value="Sports & Leisure">Sports</option>
+          <option value="Home & DIY">Home</option>
+          <option value="Music & Education">Music</option>
+          <option value="Other">Other</option>
+        </select>
         </div>
-
-        <p className="my-2 text-2xl text-violet-400 font-semibold"> { _filter } </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
           {
             filteredItems.map((item, i) => (
               <div key={i} className="mx-6 bg-white text-center border border-violet shadow shadow-violet-400 rounded-2xl overflow-hidden">
-                <img src={item.image} className="m-2"/>
+                <img src={item.image} className="m-2 object-contain h-48 w-96"/>
                 <div className="p-4">
                   <button 
+                    className="p-2 text-violet-400 text-xl font-semibold rounded-xl "
                     onClick={() =>  sellerAdd(item.seller)}
                   >
                     Copy Seller address
                   </button>
-                  <p className="my-2 text-2xl text-violet-400 font-semibold">{item.category}</p>
+                  {/* <p className="my-2 text-2xl text-violet-400 font-semibold">{item.category}</p> */}
                   <p className="my-2 text-2xl text-violet-400 font-semibold">{item.name}</p>
                   <p className="my-2 text-2xl text-violet-400 font-semibold">{item.desc}</p>
                 </div>
@@ -167,7 +197,6 @@ export default function Home() {
           }
         </div>
         </div>
-    </div>
   )
 }
 

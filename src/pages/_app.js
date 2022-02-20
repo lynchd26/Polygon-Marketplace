@@ -28,6 +28,11 @@ function MyApp({ Component, pageProps }) {
               Profile
             </a>
           </Link>
+          <Link href="/review">
+            <a className="mr-6 text-xl text-slate-400 p-2 rounded-2xl hover:bg-violet-200">
+              Reviews
+            </a>
+          </Link>
         </div>
       </nav>
       <Component {...pageProps} />
