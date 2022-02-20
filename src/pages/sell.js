@@ -84,57 +84,59 @@ export default function CreateItem () {
     }
 
     return(
-        <div className="flex justify-center">
+        <div className="flex justify-center content-center mt-32 w-screen">
             <title>List an item</title>
-            <div className="w-1/2 flex flex-col pb-12">
-                <input
-                    placeholder="Name"
-                    className="mt-8 shadow-inner border rounded-2xl p-4 focus:border-blue-500"
-                    onChange={e => updateFormInput({ ...formInput, name: e.target.value })}
-                />
-                <input
-                    placeholder="Description"
-                    className="mt-2 shadow-inner border rounded-2xl p-4"
-                    onChange={e => updateFormInput({ ...formInput, desc: e.target.value })}
-                />
-                <select
-                    className="mt-2 p-2 rounded-2xl"
-                    value={selectedCategory}
-                    onChange={(e) => {
-                        setCategory(e.target.value);
-                    }}
-                >
-                    <option value="Select Category.."selected>Select Category..</option>
-                    <option value="Cars">Cars</option>
-                    <option value="Clothing & Sneakers">Clothes</option>
-                    <option value="Electronics">Electronics</option>
-                    <option value="Sports & Leisure">Sports</option>
-                    <option value="Home & DIY">Home</option>
-                    <option value="Music & Education">Music</option>
-                    <option value="Other">Other</option>
-                </select>
-                <input
-                    placeholder="Price (Matic)"
-                    className="mt-2 shadow-inner border rounded-2xl p-4"
-                    onChange={e => updateFormInput({ ... formInput, price: e.target.value })}
-                />
-                <input
-                    type="file"
-                    name="Item"
-                    className="mt-2 rounded-2xl p-4"
-                    onChange={onChange}
-                />
-                {
-                    fileUrl && (
-                        <img className="mx-auto rounded-2xl mt-4" width="128" src={fileUrl} />
-                    )
-                }
-                <button
-                    className="font-bold mt-4 bg-violet-300 text-white rounded-2xl p-4 shadow-xl hover:bg-violet-400 transition-all duration-1000"
-                    onClick={createMarket}
+            <div className="w-1/2">      
+                <div className="flex flex-col pb-12">
+                    <input
+                        placeholder="Name"
+                        className="mt-8 shadow-inner border rounded-2xl p-4 focus:border-blue-500"
+                        onChange={e => updateFormInput({ ...formInput, name: e.target.value })}
+                    />
+                    <input
+                        placeholder="Description"
+                        className="mt-2 shadow-inner border rounded-2xl p-4"
+                        onChange={e => updateFormInput({ ...formInput, desc: e.target.value })}
+                    />
+                    <select
+                        className="mt-2 p-2 rounded-2xl"
+                        value={selectedCategory}
+                        onChange={(e) => {
+                            setCategory(e.target.value);
+                        }}
                     >
-                    Create listing
-                </button>
+                        <option value="Select Category.."selected>Select Category..</option>
+                        <option value="Cars">Cars</option>
+                        <option value="Clothing & Sneakers">Clothes</option>
+                        <option value="Electronics">Electronics</option>
+                        <option value="Sports & Leisure">Sports</option>
+                        <option value="Home & DIY">Home</option>
+                        <option value="Music & Education">Music</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <input
+                        placeholder="Price (Matic)"
+                        className="mt-2 shadow-inner border rounded-2xl p-4"
+                        onChange={e => updateFormInput({ ... formInput, price: e.target.value })}
+                    />
+                    <input
+                        type="file"
+                        name="Item"
+                        className="mt-2 rounded-2xl p-4"
+                        onChange={onChange}
+                    />
+                    {
+                        fileUrl && (
+                            <img className="mx-auto rounded-2xl mt-4" width="128" src={fileUrl} />
+                        )
+                    }
+                    <button
+                        className="font-bold mt-4 bg-violet-300 text-white rounded-2xl p-4 shadow-xl hover:bg-violet-400 transition-all duration-1000"
+                        onClick={createMarket}
+                        >
+                        Create listing
+                    </button>
+                </div>
             </div>
         </div>
     )

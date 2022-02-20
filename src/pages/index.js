@@ -88,47 +88,49 @@ export default function Home() {
     
     Swal.fire({
       title: 'Copied Seller Address to Clipboard!',
-      text: 'Go to blockscan and paste the address to contact seller.\nOr paste this address in the reviews tab to see the sellers reviews.',
+      text: 'Go to blockscan and paste the address to contact seller.\nOr paste this address in the reviews to see the sellers reviews.',
       footer: '<a href="https://chat.blockscan.com" target="_blank">Go to Blockscan...</a>'
     })
   }
 
 
   if (loadingState == 'loaded' && items.length <= 0) return (
-    <div>
-      <title>Polygon Marketplace</title>
-      <h1 className="text-center px-20 py-10 text-3xl">There are currently no items listed on the markteplace. Check back later!</h1>
+    <div className="w-screen">
+      <div className="w-[88%]">
+        <title>Polygon Marketplace</title>
+        <h1 className="text-center px-20 py-10 text-3xl">There are currently no items listed on the markteplace. Check back later!</h1>
+      </div>
     </div>
   )
 
   if (loadingState == 'loaded' && filteredItems.length <= 0) return (
-    <div>
-      <title>Polygon Marketplace</title>
-      <div className="flex justify-center">
-      <select
-          className="mt-6 ml-6 mr-6 rounded-xl py-6 px-16 bg-violet-300 text-white text-xl font-bold"
-          onChange={(e) => {
-              loadItems(e.target.value);
-            }}
-      >
-        <option value="Select Category.."selected>Select Category..</option>
-        <option value="Cars">Cars</option>
-        <option value="Clothing & Sneakers">Clothes</option>
-        <option value="Electronics">Electronics</option>
-        <option value="Sports & Leisure">Sports</option>
-        <option value="Home & DIY">Home</option>
-        <option value="Music & Education">Music</option>
-        <option value="Other">Other</option>
-      </select>
+    <div className="w-screen">
+      <div className="w-[88%]">      
+        <title>Polygon Marketplace</title>
+        <select
+            className="mt-6 rounded-xl py-6 px-16 bg-violet-300 text-white text-xl font-bold"
+            onChange={(e) => {
+                loadItems(e.target.value);
+              }}
+        >
+          <option value="Select Category.."selected>Select Category..</option>
+          <option value="Cars">Cars</option>
+          <option value="Clothing & Sneakers">Clothes</option>
+          <option value="Electronics">Electronics</option>
+          <option value="Sports & Leisure">Sports</option>
+          <option value="Home & DIY">Home</option>
+          <option value="Music & Education">Music</option>
+          <option value="Other">Other</option>
+        </select>
       </div>
-      <div>
+      <div className="w-[88%]">      
         <h1 className="text-center text-violet-400 px-20 py-10 text-3xl">There are currently no items listed in this category. Check back later!</h1>
       </div>
       </div>
   )
 
   return (
-    <div className='ml-6'>
+    <div className='w-screen'>
         <title>Polygon Marketplace</title>
         {/* <div className="flex-center">
         <p className="ml-6 mt-4 text-3xl text-bold text-violet-500">All</p>
@@ -155,7 +157,7 @@ export default function Home() {
             ))
           }
         </div> */}
-        <div className="flex justify-center">
+        <div className="w-[88%]">
         <select
             className="mt-6 mx-6 rounded-xl py-6 px-16 bg-violet-300 text-white text-xl font-bold"
             onChange={(e) => {
