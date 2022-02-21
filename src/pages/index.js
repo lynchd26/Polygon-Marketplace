@@ -27,7 +27,7 @@ export default function Home() {
 
 
   async function loadItems(__filter='') {
-    const provider = new ethers.providers.JsonRpcProvider()
+    const provider = new ethers.providers.JsonRpcProvider("https://polygon-mumbai.infura.io/v3/ad10f433b3fd4f84a55260f7cf5f97fd")
     const tokenContract = new ethers.Contract(itemaddress, Item.abi, provider)
     const marketContract = new ethers.Contract(itemmarketaddress, Market.abi, provider)
     const data = await marketContract.fetchMarketItems()
@@ -96,6 +96,24 @@ export default function Home() {
 
   if (loadingState == 'loaded' && items.length <= 0) return (
     <div className="w-screen">
+      <div className="w-[88%]">      
+        <title>Polygon Marketplace</title>
+        <select
+            className="mt-6 rounded-xl py-6 px-16 bg-violet-300 text-white text-xl font-bold"
+            onChange={(e) => {
+                loadItems(e.target.value);
+              }}
+        >
+          <option value="Select Category.."selected>Select Category..</option>
+          <option value="Cars">Cars</option>
+          <option value="Clothing & Sneakers">Clothes</option>
+          <option value="Electronics">Electronics</option>
+          <option value="Sports & Leisure">Sports</option>
+          <option value="Home & DIY">Home</option>
+          <option value="Music & Education">Music</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
       <div className="w-[88%]">
         <title>Polygon Marketplace</title>
         <h1 className="text-center px-20 py-10 text-3xl">There are currently no items listed on the markteplace. Check back later!</h1>

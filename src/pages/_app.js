@@ -7,7 +7,7 @@ import Link from 'next/link'
 function MyApp({ Component, pageProps }) {
   return (
     <div className='relative min-h-screen md:flex text-center'>
-      <div className="bg-violet-800 text-violet-100 pt-6 pr-2 min-w-[12%]">
+      <div className="bg-violet-800 text-violet-100 pt-6 px-2 min-w-[12%]">
 
         <nav>
           <a href="/" className="text-white flex items-centre space-x-2 px-4 text-2xl font-extrabold">
