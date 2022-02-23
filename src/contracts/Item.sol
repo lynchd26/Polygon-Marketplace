@@ -14,7 +14,7 @@ contract Item is ERC721URIStorage {
     Counters.Counter private _tokenIds;
     address contractAddress;
 
-    constructor(address marketplaceAddress) ERC721("Polygon Marketplace", "PMART") {
+    constructor(address marketplaceAddress) ERC721("Polygon Marketplace", "POLYMKT") {
         contractAddress = marketplaceAddress;
     }
 

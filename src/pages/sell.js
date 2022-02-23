@@ -25,7 +25,7 @@ export default function CreateItem () {
         const file = e.target.files[0]
         try {
             const added = await client.add(file)
-            const url = `https://TESTipfs.infura.io/ipfs/${added.path}`
+            const url = `https://ipfs.infura.io/ipfs/${added.path}`
             setFileUrl(url)
         } catch (e) {
             console.log(e)
@@ -46,7 +46,7 @@ export default function CreateItem () {
         // save listing to IPFS
         try {
             const added = await client.add(data)
-            const url = `https://TEST2ipfs.infura.io/ipfs/${added.path}` // ipfs path which contains all the data
+            const url = `https://ipfs.infura.io/ipfs/${added.path}` // ipfs path which contains all the data
             createSale(url) // now call function below to save this ipfs file to polygon
         } catch (error) {
             console.log('Error uploading file: ', error)

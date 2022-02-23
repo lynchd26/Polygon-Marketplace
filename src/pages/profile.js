@@ -98,7 +98,7 @@ export default function myItems() {
 
       try {
         const added = await client.add(data)
-        const url = `https:ipfs.infura.io/ipfs/${added.path}`
+        const url = `https://ipfs.infura.io/ipfs/${added.path}`
         submitReview(url)
       } catch (error) {
         console.log('Error uploading file: ', error)
