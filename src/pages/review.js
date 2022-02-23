@@ -66,24 +66,26 @@ export default function reviews() {
     }
 
     if (loadingState == 'loaded' && !reviewFilter == '' && review.length <= 0) return (
-        <div>
+        <div className="w-screen">
             <title>Marketplace Reviews</title>
-            <h1 className="text-center text-violet-400 px-20 py-10 text-3xl">There are currently no reviews to this address. Clear your query to see all reviews.</h1>
-            <div className="flex justify-center">
-                    <p className="mt-4 text-3xl font-bold text-violet-400">Reviews</p>
-            </div>
-            <div className="my-4 flex justify-center">
-                <input
-                    placeholder="Search an address.."
-                    className="mt-2 shadow-inner border rounded-2xl p-4"
-                    onChange={e => setReviewFilter(e.target.value)}
-                />
-                <button
-                    className="ml-2 p-4 text-violet-400 text-xl font-bold"
-                    onClick={() => loadItems()}
-                >
-                    Search
-                </button>
+            <div className="w-[88%]">
+                <div className="flex justify-center">
+                        <p className="mt-4 text-3xl font-bold text-violet-400">Reviews</p>
+                </div>
+                <div className="my-4 flex justify-center">
+                    <input
+                        placeholder="Search an address.."
+                        className="mt-2 shadow-inner border rounded-2xl p-4"
+                        onChange={e => setReviewFilter(e.target.value)}
+                    />
+                    <button
+                        className="ml-2 p-4 text-violet-400 text-xl font-bold"
+                        onClick={() => loadItems()}
+                    >
+                        Search
+                    </button>
+                </div>
+                <h1 className="text-center text-violet-400 px-20 py-10 text-3xl">There are currently no reviews to this address. Clear your query to see all reviews.</h1>
             </div>
         </div>
       )
@@ -92,7 +94,6 @@ export default function reviews() {
         <div className="w-screen">
             <title>Marketplace Reviews</title>
             <div className="w-[88%]">
-                <h1 className="text-center text-violet-400 px-20 py-10 text-3xl">There are currently no reviews on the marketplace.</h1>
                 <div className="flex justify-center">
                         <p className="mt-4 text-3xl font-bold text-violet-400">Reviews</p>
                 </div>

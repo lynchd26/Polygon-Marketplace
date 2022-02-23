@@ -177,25 +177,26 @@ export default function myItems() {
               {
                 sold.map((item, i) => (
                   <div key={i} className="border shadow rounded-xl overflow-hidden">
-                  <img src={item.image} className="object-contain h-48 w-96"/>
-                    <div className="mx-3 mb-3 text-center shadow rounded-2xl p-4 bg-indigo-300">
-                      <p className="text-xl my-auto font-bold text-blue-500">Sale price:<br></br>{item.price} MATIC</p>
-                    </div>
-                    <div className="mx-3 mb-3 text-center shadow rounded-2xl p-4 bg-indigo-300">
-                      <p className="text-xl my-auto font-bold text-blue-500">Leave Review</p>
-                      <div>
+                  <img src={item.image} className="mt-4 object-contain object-center h-48 w-96"/>
+                    <p className="text-xl my-2 text-center font-bold text-violet-300">Purchase price:<br></br>{item.price} MATIC</p>
+                    <div className="mx-3 mb-3 text-center shadow rounded-2xl p-4 bg-violet-400">
+                      <p className="text-xl my-auto font-bold text-white">Leave Review</p>
+                      <div className="content-center">
                         <input
                           placeholder="Rating"
                           className="mt-2 shadow-inner border rounded-2xl p-4"
+                          onChange={e => updateFormInput({ ...formInput, rating: e.target.value })}
                         />
                         <input
                           placeholder="Additional Details"
                           className="mt-2 shadow-inner border rounded-2xl p-4"
+                          onChange={e => updateFormInput({ ...formInput, details: e.target.value })}
                         />
                         <button
-                            className="font-bold mt-4 bg-indigo-200 text-blue-500 rounded-xl hover:rounded-2xl duration-500 p-4 shadow-xl hover:bg-indigo-100"
+                            className="font-bold mt-4 bg-violet-200 text-violet-400 rounded-xl hover:rounded-2xl duration-500 p-4 shadow-xl hover:bg-white"
+                            onClick={() => createMarketReview(item.seller, item.name, item.image)}
                         >
-                          Post Review
+                          Submit Review
                         </button>
                       </div>
                     </div>

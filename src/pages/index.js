@@ -99,7 +99,7 @@ export default function Home() {
       <div className="w-[88%]">      
         <title>Polygon Marketplace</title>
         <select
-            className="mt-6 rounded-xl py-6 px-16 bg-violet-300 text-white text-xl font-bold"
+            className="mt-6 rounded-xl py-6 px-16 bg-violet-400 text-white text-xl font-bold"
             onChange={(e) => {
                 loadItems(e.target.value);
               }}
@@ -116,7 +116,7 @@ export default function Home() {
       </div>
       <div className="w-[88%]">
         <title>Polygon Marketplace</title>
-        <h1 className="text-center px-20 py-10 text-3xl">There are currently no items listed on the markteplace. Check back later!</h1>
+        <h1 className="text-center text-violet-400 px-20 py-10 text-3xl">There are currently no items listed in this category. Check back later!</h1>
       </div>
     </div>
   )
@@ -126,7 +126,7 @@ export default function Home() {
       <div className="w-[88%]">      
         <title>Polygon Marketplace</title>
         <select
-            className="mt-6 rounded-xl py-6 px-16 bg-violet-300 text-white text-xl font-bold"
+            className="mt-6 rounded-xl py-6 px-16 bg-violet-400 text-white text-xl font-bold"
             onChange={(e) => {
                 loadItems(e.target.value);
               }}
@@ -177,7 +177,7 @@ export default function Home() {
         </div> */}
         <div className="w-[88%]">
         <select
-            className="mt-6 mx-6 rounded-xl py-6 px-16 bg-violet-300 text-white text-xl font-bold"
+            className="mt-6 mx-6 rounded-xl py-6 px-16 bg-violet-400 text-white text-xl font-bold"
             onChange={(e) => {
                 loadItems(e.target.value);
               }}
