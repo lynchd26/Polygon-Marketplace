@@ -3,7 +3,6 @@ import { useEffect, useState } from "react"
 import axios from 'axios'
 import Web3Modal from 'web3modal'
 import { create as ipfsHttpClient } from 'ipfs-http-client'
-import { useRouter } from "next/router"
 
 import {
   itemaddress, itemmarketaddress
@@ -11,7 +10,6 @@ import {
 
 import Item from '../artifacts/contracts/Item.sol/Item.json'
 import Market from '../artifacts/contracts/PolygonMarketplace.sol/PolygonMarketplace.json'
-import { formatUnits } from "ethers/lib/utils"
 
 const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0')
 
@@ -129,7 +127,7 @@ export default function myItems() {
         itemaddress, tokenId, price, { value: listingPrice }
       )
       await transaction.wait()
-      loadItems()
+      router.push('/review')
     }
   
   

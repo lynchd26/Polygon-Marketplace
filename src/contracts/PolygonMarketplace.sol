@@ -149,11 +149,7 @@ contract PolygonMarketplace is ReentrancyGuard {
         idToMarketItem[itemId].owner = payable(msg.sender);                         // sets new owner of this item
         idToMarketItem[itemId].sold = true;
         _itemsSold.increment();
-        if (idToMarketItem[itemId].review) {
-            payable(owner).transfer(reviewListPrice);
-        } else {
-            payable(owner).transfer(listPrice);                                         // owner of marketplace is transferred listing fee
-        }
+        payable(owner).transfer(listPrice);                                         // owner of marketplace is transferred listing fee
     }
 
 
