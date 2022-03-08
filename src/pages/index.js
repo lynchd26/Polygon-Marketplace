@@ -26,8 +26,8 @@ export default function Home() {
 
 
   async function loadItems(__filter='') {
-    // const provider = new ethers.providers.JsonRpcProvider("https://polygon-mumbai.infura.io/v3/ad10f433b3fd4f84a55260f7cf5f97fd")
-    const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.matic.today')
+    const provider = new ethers.providers.JsonRpcProvider()
+    // const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.matic.today')
     const tokenContract = new ethers.Contract(itemaddress, Item.abi, provider)
     const marketContract = new ethers.Contract(itemmarketaddress, Market.abi, provider)
     const data = await marketContract.fetchMarketItems()

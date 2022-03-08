@@ -3,6 +3,8 @@ import { useEffect, useState } from "react"
 import axios from 'axios'
 import Web3Modal from 'web3modal'
 import { create as ipfsHttpClient } from 'ipfs-http-client'
+import { useRouter } from "next/router"
+
 
 import {
   itemaddress, itemmarketaddress
@@ -18,6 +20,7 @@ export default function myItems() {
     const [items, setItems] = useState([])
     const [sold, setSold] = useState([])
     const [loadingState, setLoadingState] = useState('not-loaded')
+    const router = useRouter()
   
     useEffect(() => {
       loadItems()
